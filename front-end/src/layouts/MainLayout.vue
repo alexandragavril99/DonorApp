@@ -12,10 +12,8 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Donor
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -26,17 +24,46 @@
       content-class="bg-grey-1"
     >
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item clickable exact to="/">
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Acasa</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item color="dark" clickable exact to="/">
+          <q-item-section avatar>
+            <q-icon name="person" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label color="dark">Profil</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable exact to="/">
+          <q-item-section avatar>
+            <q-icon name="event" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Programeaza-te</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable exact to="/">
+          <q-item-section avatar>
+            <q-icon name="star_rate" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Scor</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable @click="logout">
+          <q-item-section avatar>
+            <q-icon name="logout" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Logout</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -47,67 +74,49 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
+import axios from "axios";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
-  name: 'MainLayout',
-  components: { EssentialLink },
-  data () {
+  name: "MainLayout",
+  data() {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
-    }
-  }
-}
-</script>
+      leftDrawerOpen: false
+    };
+  },
 
+  methods: {
+    logout() {
+      axios
+        .delete("http://localhost:8081/api/user/logout", {
+          withCredentials: true
+        })
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "logout",
+            message: "You logged out"
+          });
+          this.$router.push("/login");
+        })
+        .catch(() => {
+          this.$q.notify({
+            color: "red-4",
+            textColor: "white",
+            icon: "error",
+            message: "Error logging out"
+          });
+        });
+    },
+    ...mapActions(["fetchUser"])
+  },
+  created() {
+    this.fetchUser();
+  }
+};
+</script>
 <style scoped>
-.q-toolbar {
-  background-color: #e74c3c;
+.q-item {
+  color: #000000;
 }
 </style>

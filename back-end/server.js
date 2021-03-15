@@ -3,6 +3,10 @@ const app = express();
 const otherController = require("./controllers").other;
 const router = require("./routes");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const initPassport = require("./passport/passport-config");
+const UserModel = require("./models").User;
 
 app.use(
   express.urlencoded({
@@ -10,6 +14,33 @@ app.use(
   })
 );
 app.use(express.json());
+
+initPassport(
+  passport,
+  async (email) => {
+    return await UserModel.findOne({ where: { email: email } });
+  },
+  async (id) => {
+    return await UserModel.findOne({ where: { id: id } });
+  }
+);
+
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    name: "cookieLogin",
+    cookie: {
+      httpOnly: false,
+      maxAge: 3600000,
+    },
+  })
+);
+
+app.use(passport.initialize()); //initializam passport in cadrul aplicatiei
+app.use(passport.session()); //vrem ca datele sa fie persistente de-a lungul intregii sesiuni a userului
+
 
 const corsOptions = {
   origin: true,
