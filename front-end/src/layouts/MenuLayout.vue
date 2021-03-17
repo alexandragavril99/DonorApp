@@ -116,6 +116,9 @@
 <script>
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
+import Vue from "vue";
+import VueMobileDetection from "vue-mobile-detection";
+Vue.use(VueMobileDetection);
 
 export default {
   name: "MenuLayout",

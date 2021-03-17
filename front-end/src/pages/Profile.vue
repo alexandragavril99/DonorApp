@@ -3,11 +3,10 @@
     <particles-bg
       num="10"
       type="custom"
+      color="#FFFFFF"
       :bg="true"
       :config="config"
-      color="#b22222"
     />
-
     <q-dialog v-model="prompt" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
@@ -143,17 +142,18 @@ export default {
       },
       prompt: false,
       config: {
-        num: [4, 7],
+        num: [4, 4],
         // rps: 0.1,
-        // radius: [5, 40],
+        radius: [5, 35],
         life: [1.5, 3],
-        v: [0, 1],
+        v: [0, 0],
         // tha: [-30, 30],
         alpha: [0.6, 0],
         scale: [0.1, 0.4],
+        color: "#b22222",
         position: "all",
         cross: "dead",
-        random: 15
+        random: 15,
       }
     };
   }

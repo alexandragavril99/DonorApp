@@ -1,5 +1,12 @@
 <template>
   <div class="q-pa-md flex flex-center page">
+    <particles-bg
+      num="10"
+      type="custom"
+      color="#FFFFFF"
+      :bg="true"
+      :config="config"
+    />
     <div class="login" style="max-width: 500px">
       <div class="logo">
         <img src="../assets/logo-donor.png" />
@@ -48,15 +55,32 @@
 
 <script>
 import axios from "axios";
-
+import { ParticlesBg } from "particles-bg-vue";
 export default {
   name: "Login",
+  components: {
+    ParticlesBg
+  },
   data() {
     return {
       email: null,
       password: null,
 
-      accept: false
+      accept: false,
+      config: {
+        num: [4, 4],
+        // rps: 0.1,
+        radius: [5, 35],
+        life: [1.5, 3],
+        v: [0, 0],
+        // tha: [-30, 30],
+        alpha: [0.6, 0],
+        scale: [0.1, 0.4],
+        color: "#b22222",
+        position: "all",
+        cross: "dead",
+        random: 15
+      }
     };
   },
 
