@@ -1,5 +1,13 @@
 <template>
   <div class="q-pa-md flex flex-center page">
+    <particles-bg
+      num="10"
+      type="custom"
+      color="#FFFFFF"
+      :bg="true"
+      :canvas="{ height: '85rem' }"
+      :config="config"
+    />
     <div class="login" style="max-width: 500px">
       <div class="logo">
         <img src="../assets/logo-donor.png" />
@@ -125,6 +133,22 @@
           </template>
         </q-input>
 
+        <q-input
+          filled
+          v-model="weight"
+          type="number"
+          label="Your weight *"
+          lazy-rules
+          :rules="[
+            val => (val !== null && val !== '') || 'Please type your weight',
+            val => (val > 40 && val < 150) || 'Incorrect weight'
+          ]"
+        >
+          <template v-slot:prepend>
+            <q-icon name="self_improvement"></q-icon>
+          </template>
+        </q-input>
+
         <q-select
           filled
           v-model="bloodType"
@@ -145,6 +169,7 @@
           filled
           v-model="lastDonation"
           mask="date"
+          lazy-rules
           :rules="['lastDonation']"
           label="Last donation"
         >
@@ -179,10 +204,14 @@
 </template>
 
 <script>
+import { ParticlesBg } from "particles-bg-vue";
 import axios from "axios";
 
 export default {
   name: "Login",
+  components: {
+    ParticlesBg
+  },
   data() {
     return {
       name: null,
@@ -192,10 +221,25 @@ export default {
       phone: null,
       city: null,
       birthDate: null,
+      weight: null,
       bloodType: null,
       lastDonation: null,
       accept: false,
-      options: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+", "Nu știu"]
+      options: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+", "Nu știu"],
+      config: {
+        num: [4, 6],
+        // rps: 0.1,
+        radius: [5, 35],
+        life: [1.5, 3],
+        v: [0, 0],
+        // tha: [-30, 30],
+        alpha: [0.6, 0],
+        scale: [0.1, 0.4],
+        color: "#b22222",
+        position: "all",
+        cross: "dead",
+        random: 15
+      }
     };
   },
 
@@ -210,6 +254,7 @@ export default {
         city: this.city,
         birthDate: this.birthDate,
         bloodType: this.bloodType,
+        weight: parseInt(this.weight),
         lastDonation: this.lastDonation
       };
       axios
@@ -269,7 +314,7 @@ export default {
 
 .page {
   height: 180vh;
-  background-image: linear-gradient(to bottom, #fffbd5, #8a0303);
+  /* background-image: linear-gradient(to bottom, #fffbd5, #8a0303); */
 }
 
 .registerBtnDinv {

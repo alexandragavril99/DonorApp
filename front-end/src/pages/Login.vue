@@ -68,7 +68,7 @@ export default {
 
       accept: false,
       config: {
-        num: [4, 4],
+        num: [4, 5],
         // rps: 0.1,
         radius: [5, 35],
         life: [1.5, 3],

@@ -1,46 +1,48 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <div v-if="!$isMobile()">
-      <q-tabs
-        v-model="tab"
-        class="shadow-2 bg-secondary swipeable text-primary desktopMenu"
-        align="right"
-      >
-        <!-- <img class="logo" alt="Logo" src="../assets/logo-donor.png" /> -->
+      <q-header elevated>
+        <q-tabs
+          v-model="tab"
+          class="shadow-2 bg-secondary swipeable text-primary"
+          align="right"
+        >
+          <!-- <img class="logo" alt="Logo" src="../assets/logo-donor.png" /> -->
 
-        <q-tab name="home" label="Acasă" icon="home" class="tabsList" />
-        <q-tab
-          name="appointment"
-          label="Programează-te"
-          icon="event"
-          class="tabsList"
-        />
-        <q-tab
-          name="profile"
-          label="Profil"
-          icon="person"
-          class="tabsList"
-          clickable
-          @click="$router.push('/profile')"
-        ></q-tab>
-        <q-tab
-          name="score"
-          label="Scor"
-          icon="star_rate"
-          class="tabsList"
-        ></q-tab>
-        <q-tab
-          name="logout"
-          label="Logout"
-          icon="logout"
-          class="tabsList"
-          clickable
-          @click="logout"
-        ></q-tab>
-      </q-tabs>
+          <q-tab name="home" label="Acasă" icon="home" class="tabsList" />
+          <q-tab
+            name="appointment"
+            label="Programează-te"
+            icon="event"
+            class="tabsList"
+          />
+          <q-tab
+            name="profile"
+            label="Profil"
+            icon="person"
+            class="tabsList"
+            clickable
+            @click="$router.push('/profile').catch(err => {})"
+          ></q-tab>
+          <q-tab
+            name="score"
+            label="Scor"
+            icon="star_rate"
+            class="tabsList"
+          ></q-tab>
+          <q-tab
+            name="logout"
+            label="Logout"
+            icon="logout"
+            class="tabsList"
+            clickable
+            @click="logout"
+          ></q-tab>
+        </q-tabs>
+      </q-header>
     </div>
     <div v-else>
-      <q-header elevated class="mobileMenu">
+      <q-header elevated>
         <q-toolbar>
           <q-btn
             flat
@@ -72,12 +74,12 @@
               <q-item-label>Acasa</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item color="dark" clickable exact to="/">
+          <q-item clickable exact to="/profile">
             <q-item-section avatar>
               <q-icon name="person" />
             </q-item-section>
             <q-item-section>
-              <q-item-label color="dark">Profil</q-item-label>
+              <q-item-label>Profil</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable exact to="/">
@@ -153,11 +155,10 @@ export default {
           });
         });
     },
-    isMobile() {
-      if (window.innerWidth <= 760) {
-        return true;
-      } else {
-        return false;
+
+    profile() {
+      if (this.$router.path !== "/profile") {
+        this.$router.push("/profile");
       }
     },
     ...mapActions(["fetchUser"])
@@ -167,9 +168,10 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .tabsList {
-  margin-right: 3%;
+  margin-right: 1%;
 }
 .logo {
   width: 72px;

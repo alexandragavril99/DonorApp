@@ -54,4 +54,8 @@ router.get("/profile", checkNotAuth, async (req, res) => {
   res.status(200).send(user);
 });
 
+router.get("/getProfile", checkNotAuth, userController.getProfile);
+
+router.put("/updateProfile", checkNotAuth, userController.updateProfile);
+
 module.exports = router;

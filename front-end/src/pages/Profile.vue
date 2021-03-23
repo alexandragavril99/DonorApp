@@ -94,7 +94,19 @@
           text-color="white"
           icon="accessibility"
         >
-          21 ani
+          {{ user.age }} ani
+        </q-chip>
+      </q-card-section>
+      <q-card-section class="text-h6 text-primary q-card-name">
+        <q-chip
+          size="lg"
+          outline
+          square
+          color="primary"
+          text-color="white"
+          icon="self_improvement"
+        >
+          {{ user.weight }} kg
         </q-chip>
       </q-card-section>
       <q-card-section class="text-h6 text-primary q-card-name">
@@ -118,6 +130,7 @@
 
 <script>
 import { ParticlesBg } from "particles-bg-vue";
+import axios from "axios";
 
 export default {
   name: "Profile",
@@ -128,21 +141,10 @@ export default {
     return {
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      user: {
-        name: "Popescu",
-        surname: "Ionescu",
-        email: "email@gmail.com",
-        password: null,
-        phone: "0712341234",
-        city: "Cluj-Napoca",
-        birthDate: "20/10/1998",
-        bloodType: "A+",
-        lastDonation: "Nu știu",
-        options: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+", "Nu știu"]
-      },
+      user: {},
       prompt: false,
       config: {
-        num: [4, 4],
+        num: [4, 5],
         // rps: 0.1,
         radius: [5, 35],
         life: [1.5, 3],
@@ -153,9 +155,30 @@ export default {
         color: "#b22222",
         position: "all",
         cross: "dead",
-        random: 15,
+        random: 15
       }
     };
+  },
+  methods: {
+    calculateAge() {
+      let birthDate2 = new Date(this.user.birthDate);
+      let diff_ms = Date.now() - birthDate2.getTime();
+      var age_dt = new Date(diff_ms);
+
+      console.log(Math.abs(age_dt.getUTCFullYear() - 1970));
+      return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
+  },
+  created() {
+    axios
+      .get("http://localhost:8081/api/user/getProfile", {
+        withCredentials: true
+      })
+      .then(userData => {
+        this.user = userData.data;
+        this.user.age = this.calculateAge();
+        console.log(this.user);
+      });
   }
 };
 </script>
