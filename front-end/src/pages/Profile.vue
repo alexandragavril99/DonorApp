@@ -10,7 +10,9 @@
     <q-dialog v-model="prompt" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6">Your address</div>
+          <div class="text-h6" style="text-align: center">
+            Editează datele de contact
+          </div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -19,12 +21,77 @@
             v-model="user.name"
             autofocus
             @keyup.enter="prompt = false"
-          />
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="perm_identity"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="user.surname"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="perm_identity"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="user.email"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="mail"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="user.phone"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="phone"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="user.city"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="business"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="user.weight"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="self_improvement"></q-icon>
+            </template>
+          </q-input>
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup />
-          <q-btn flat label="Add address" v-close-popup />
+          <q-btn flat label="Cancel" v-close-popup @click="cancel" />
+          <q-btn
+            flat
+            label="Modifică profil"
+            v-close-popup
+            @click="updateUser"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -33,7 +100,7 @@
         <q-btn
           color="primary"
           round
-          @click="prompt = true"
+          @click="displayDialog"
           icon="app_registration"
           size="md"
         />
@@ -142,6 +209,8 @@ export default {
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       user: {},
+      updatedUser: {},
+      copiedUser: {},
       prompt: false,
       config: {
         num: [4, 5],
@@ -167,6 +236,39 @@ export default {
 
       console.log(Math.abs(age_dt.getUTCFullYear() - 1970));
       return Math.abs(age_dt.getUTCFullYear() - 1970);
+    },
+    updateUser() {
+      this.user.weight = parseInt(this.user.weight);
+      axios
+        .put("http://localhost:8081/api/user/updateProfile", this.user, {
+          withCredentials: true
+        })
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Profil modificat"
+          });
+        })
+        .catch(err => {
+          const errors = Object.values(err.response.data); //iau erorile din back
+          errors.map(item => {
+            this.$q.notify({
+              color: "red-9",
+              textColor: "white",
+              icon: "warning",
+              message: item
+            });
+          });
+        });
+    },
+    cancel() {
+      Object.assign(this.user, this.copiedUser);
+    },
+    displayDialog() {
+      this.prompt = true;
+      Object.assign(this.copiedUser, this.user);
     }
   },
   created() {
@@ -178,6 +280,8 @@ export default {
         this.user = userData.data;
         this.user.age = this.calculateAge();
         console.log(this.user);
+        Object.assign(this.updatedUser, userData.data);
+        console.log(this.updatedUser);
       });
   }
 };
