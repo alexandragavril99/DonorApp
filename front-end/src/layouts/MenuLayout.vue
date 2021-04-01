@@ -9,12 +9,21 @@
         >
           <!-- <img class="logo" alt="Logo" src="../assets/logo-donor.png" /> -->
 
-          <q-tab name="home" label="Acasă" icon="home" class="tabsList" />
+          <q-tab
+            name="home"
+            label="Acasă"
+            icon="home"
+            class="tabsList"
+            clickable
+            @click="$router.push('/').catch(err => {})"
+          />
           <q-tab
             name="appointment"
             label="Programează-te"
             icon="event"
             class="tabsList"
+            clickable
+            @click="$router.push('/appointment').catch(err => {})"
           />
           <q-tab
             name="profile"
@@ -23,6 +32,12 @@
             class="tabsList"
             clickable
             @click="$router.push('/profile').catch(err => {})"
+          ></q-tab>
+          <q-tab
+            name="emergency"
+            label="Ajutor"
+            icon="healing"
+            class="tabsList"
           ></q-tab>
           <q-tab
             name="score"
@@ -66,7 +81,7 @@
         content-class="bg-grey-1 mobileMenu"
       >
         <q-list>
-          <q-item clickable exact to="/register">
+          <q-item clickable exact to="/">
             <q-item-section avatar>
               <q-icon name="home" />
             </q-item-section>
@@ -82,7 +97,7 @@
               <q-item-label>Profil</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable exact to="/">
+          <q-item clickable exact to="/appointment">
             <q-item-section avatar>
               <q-icon name="event" />
             </q-item-section>
@@ -170,14 +185,20 @@ export default {
 </script>
 
 <style scoped>
-.tabsList {
+/* .tabsList {
   margin-right: 1%;
 }
+.q-tab {
+  padding: 0 12px;
+} */
 .logo {
   width: 72px;
   /* position: absolute;
   z-index: 100;
   top: -3vh;
   padding-left: 3%; */
+}
+.q-tab--full {
+  min-height: 64px;
 }
 </style>

@@ -95,6 +95,55 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="passwordDialog" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6" style="text-align: center">Modifică parola</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model="userPassword.oldPassword"
+            @keyup.enter="passwordDialog = false"
+            align-items
+            label="Introdu parola veche"
+            :rules="[val => (val && val.length > 0) || 'Please type something']"
+          >
+            <template v-slot:prepend>
+              <q-icon name="looks_one"></q-icon>
+            </template>
+          </q-input>
+          <q-input
+            dense
+            v-model="userPassword.newPassword"
+            @keyup.enter="passwordDialog = false"
+            align-items
+            label="Introdu parola nouă"
+            :rules="[val => (val && val.length > 0) || 'Please type something']"
+          >
+            <template v-slot:prepend>
+              <q-icon name="looks_two"></q-icon>
+            </template>
+          </q-input>
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn
+            flat
+            label="Cancel"
+            v-close-popup
+            @click="closePasswordDialog"
+          />
+          <q-btn
+            flat
+            label="Modifică parola"
+            v-close-popup
+            @click="updatePassword"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-card class="my-card">
       <div class="avatar">
         <q-btn
@@ -191,6 +240,11 @@
       <q-card-section class="text-h6 text-primary q-card-name">
         Ultima dată a donării: {{ user.lastDonation }}
       </q-card-section>
+      <q-card-section class="text-h6 text-primary q-card-name">
+        <q-btn color="primary" @click="passwordDialog = true">
+          Modifică parola
+        </q-btn>
+      </q-card-section>
     </q-card>
   </div>
 </template>
@@ -211,7 +265,12 @@ export default {
       user: {},
       updatedUser: {},
       copiedUser: {},
+      userPassword: {
+        oldPassword: "",
+        newPassword: ""
+      },
       prompt: false,
+      passwordDialog: false,
       config: {
         num: [4, 5],
         // rps: 0.1,
@@ -269,6 +328,38 @@ export default {
     displayDialog() {
       this.prompt = true;
       Object.assign(this.copiedUser, this.user);
+    },
+    closePasswordDialog() {
+      this.userPassword.oldPassword = this.userPassword.newPassword = "";
+    },
+    updatePassword() {
+      axios
+        .put(
+          "http://localhost:8081/api/user/updatePassword",
+          this.userPassword,
+          { withCredentials: true }
+        )
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Parolă modificată"
+          });
+        })
+        .catch(err => {
+          const errors = Object.values(err.response.data); //iau erorile din back
+          errors.map(item => {
+            this.$q.notify({
+              color: "red-9",
+              textColor: "white",
+              icon: "warning",
+              message: item
+            });
+          });
+        });
+      this.userPassword.oldPassword = "";
+      this.userPassword.newPassword = "";
     }
   },
   created() {

@@ -1,4 +1,5 @@
 const UserDB = require("../models").User;
+const AppointmentDB = require("../models").Appointment;
 const bcrypt = require("bcrypt");
 
 const controller = {
@@ -48,6 +49,10 @@ const controller = {
     if (!user.email.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
       errors.email = "Incorrect email format!";
       console.log("Incorrect email format!");
+    }
+    if (req.body.password.length < 5) {
+      errors.password = "Password should contain at least 5 characters";
+      console.log("Password should contain at least 5 characters");
     }
     if (user.phone.length != 10) {
       errors.phone = "Phone must contain 10 characters!";
@@ -153,7 +158,11 @@ const controller = {
       errors.phone = "Phone must contain only digits!";
       console.log("Phone must contain only digits!");
     }
-    if (!updatedUser.city.match("^[A-Za-zâîășțÂÎĂȘȚ]+(?:[s-][A-Za-zâîășțÂÎĂȘȚ]+)*$")) {
+    if (
+      !updatedUser.city.match(
+        "^[A-Za-zâîășțÂÎĂȘȚ]+(?:[s-][A-Za-zâîășțÂÎĂȘȚ]+)*$"
+      )
+    ) {
       errors.city = "City must contain only letters!";
       console.log("City must contain only letters!");
     }
@@ -179,6 +188,87 @@ const controller = {
     } else {
       res.status(400).send(errors);
       console.log(errors);
+    }
+  },
+
+  updatePassword: async (req, res) => {
+    const user = await req.user;
+    const password = {
+      oldPassword: await bcrypt.hash(req.body.oldPassword, 10),
+      newPassword: await bcrypt.hash(req.body.newPassword, 10),
+    };
+    let errors = {};
+
+    if (!password.oldPassword || !password.newPassword) {
+      errors.emptyFields = "Empty fields!";
+      console.log("Empty fields!");
+    }
+
+    const isMatch = await bcrypt.compare(req.body.oldPassword, user.password);
+    if (!isMatch) {
+      errors.unmatchedPassword = "Password does not match";
+      console.log("Passwords does not match");
+    }
+
+    if (req.body.newPassword.length < 5) {
+      errors.newPassword = "Password should contain at least 5 characters!";
+      console.log("Password should contain at least 5 characters!");
+    } else if (req.body.oldPassword === req.body.newPassword) {
+      errors.password =
+        "New password should be different than the last password";
+      console.log("New password should be different than the last password");
+    }
+
+    if (Object.keys(errors).length === 0) {
+      user
+        .update({
+          password: password.newPassword,
+        })
+        .then(() => {
+          res.status(200).send({ message: "User updated" });
+        })
+        .catch((err) => res.status(500).send(err));
+    } else {
+      res.status(400).send(errors);
+    }
+  },
+
+  addAppointment: async (req, res) => {
+    const user = await req.user;
+    const appointment = {
+      date: req.body.date,
+      schedulingTime: req.body.schedulingTime,
+      userId: user.id,
+    };
+
+    AppointmentDB.create(appointment)
+      .then(() => {
+        res.status(200).send({ message: "Appointment created!" });
+      })
+      .catch((err) => res.status(500).send(err));
+  },
+
+  getAllAppointments: async (req, res) => {
+    AppointmentDB.findAll()
+      .then((appointments) => res.status(200).send(appointments))
+      .catch((err) => res.status(500).send(err));
+  },
+
+  updateAppointmentsDoctorById: async (req, res) => {
+    const user = await req.user;
+    const appointment = await AppointmentDB.findOne({
+      where: { id: req.params.id },
+    });
+
+    if (appointment) {
+      appointment
+        .update({
+          doctorId: user.id,
+        })
+        .then(() => res.status(200).send({ message: "Appointment taken!" }))
+        .catch((err) => res.status(500).send(err));
+    } else {
+      res.status(400).send({ message: "The id does not exist!" });
     }
   },
 };

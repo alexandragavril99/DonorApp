@@ -35,6 +35,10 @@ router.get("/alreadyAuth", async (req, res) => {
   res.status(403).send({ message: "You are already logged in." });
 });
 
+router.get("/notAllowed", async (req, res) => {
+  res.status(403).send({ message: "You are not a doctor." });
+});
+
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect("/api/user/alreadyAuth");
@@ -49,6 +53,13 @@ function checkNotAuth(req, res, next) {
   res.redirect("/api/user/notAuth");
 }
 
+async function checkAdmin(req, res, next) {
+  const user = await req.user;
+  if (req.isAuthenticated() && user.isDoctor) {
+    return next();
+  } else res.redirect("/api/user/notAllowed");
+}
+
 router.get("/profile", checkNotAuth, async (req, res) => {
   const user = await req.user;
   res.status(200).send(user);
@@ -57,5 +68,17 @@ router.get("/profile", checkNotAuth, async (req, res) => {
 router.get("/getProfile", checkNotAuth, userController.getProfile);
 
 router.put("/updateProfile", checkNotAuth, userController.updateProfile);
+
+router.put("/updatePassword", checkNotAuth, userController.updatePassword);
+
+router.post("/addAppointment", checkNotAuth, userController.addAppointment);
+
+router.get("/getAllApointments", checkAdmin, userController.getAllAppointments);
+
+router.put(
+  "/updateAppointmentsDoctorById/:id",
+  checkAdmin,
+  userController.updateAppointmentsDoctorById
+);
 
 module.exports = router;
