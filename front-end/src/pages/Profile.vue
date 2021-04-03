@@ -373,7 +373,8 @@ export default {
         console.log(this.user);
         Object.assign(this.updatedUser, userData.data);
         console.log(this.updatedUser);
-      });
+      })
+      .catch(err => console.log(err));
   }
 };
 </script>

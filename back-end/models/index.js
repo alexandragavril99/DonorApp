@@ -4,6 +4,7 @@ const AppointmentModel = require("./appointment");
 const EmergenciesModel = require("./emergency");
 const EmployeeModel = require("./employee");
 const EmployeesVacationsModel = require("./employeesVacations");
+const DonationsHistoryModel = require("./donationsHistory");
 const db = require("../config/db");
 
 const User = UserModel(db, Sequelize);
@@ -11,9 +12,7 @@ const Appointment = AppointmentModel(db, Sequelize);
 const Emergency = EmergenciesModel(db, Sequelize);
 const Employee = EmployeeModel(db, Sequelize);
 const EmployeesVacations = EmployeesVacationsModel(db, Sequelize);
-
-User.hasMany(Emergency);
-Emergency.belongsTo(User);
+const DonationsHistory = DonationsHistoryModel(db, Sequelize);
 
 Employee.belongsTo(User, { foreignKey: "id" });
 
@@ -34,11 +33,18 @@ Appointment.belongsTo(User, { foreignKey: "userId" });
 User.hasMany(Appointment, { foreignKey: "doctorId" });
 Appointment.belongsTo(User, { foreignKey: "doctorId" });
 
+User.hasMany(DonationsHistory, { foreignKey: "userId" });
+DonationsHistory.belongsTo(User, { foreignKey: "userId" });
+
+User.hasMany(Emergency, { foreignKey: "userId" });
+Emergency.belongsTo(User, { foreignKey: "userId" });
+
 module.exports = {
   User,
   Employee,
   Emergency,
   Appointment,
   EmployeesVacations,
+  DonationsHistory,
   connection: db,
 };

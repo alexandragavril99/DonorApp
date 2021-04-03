@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    "employeesVacation",
+    "donationsHistory",
     {
-      startDate: DataTypes.STRING,
-      endDate: DataTypes.STRING,
+      dateOfDonation: DataTypes.STRING,
     },
     {
       underscored: true,
+      tableName: "donations_history",
     }
   );
 };

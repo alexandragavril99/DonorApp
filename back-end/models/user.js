@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       birthDate: DataTypes.STRING,
       weight: DataTypes.INTEGER,
       bloodType: DataTypes.STRING,
-      lastDonation: DataTypes.STRING,
       isDoctor: DataTypes.BOOLEAN,
       isManager: DataTypes.BOOLEAN,
       canDonate: DataTypes.BOOLEAN,

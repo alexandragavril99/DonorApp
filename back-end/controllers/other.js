@@ -12,9 +12,9 @@ const controller = {
           message: "Database reset",
         });
       })
-      .catch(() => {
+      .catch((err) => {
         res.status(500).send({
-          message: "Server error",
+          err,
         });
       });
   },

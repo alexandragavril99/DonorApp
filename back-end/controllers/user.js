@@ -1,5 +1,6 @@
 const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
+const DonationsHistoryDB = require("../models").DonationsHistory;
 const bcrypt = require("bcrypt");
 
 const controller = {
@@ -79,17 +80,61 @@ const controller = {
     }
 
     if (Object.keys(errors).length === 0) {
-      UserDB.create(user)
-        .then(() => res.status(201).send({ message: "User created" }))
+      UserDB.create({
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        password: user.password,
+        phone: user.phone,
+        city: user.city,
+        birthDate: user.birthDate,
+        bloodType: user.bloodType,
+        weight: user.weight,
+      })
+        .then((response) => {
+          res.status(201).send({ message: "User created" });
+          DonationsHistoryDB.create({
+            dateOfDonation: user.lastDonation,
+            userId: response.id,
+          })
+            .then(() => console.log("Last donation added"))
+            .catch((err) => res.status(500).send(err));
+        })
         .catch((err) => res.status(500).send(err));
     } else {
       res.status(400).send(errors);
     }
   },
 
+  getLastDonation: async (req, res) => {
+    const user = await req.user;
+    DonationsHistoryDB.findAll({
+      where: {
+        userId: user.id,
+      },
+    })
+      .then((response) => {
+        // res.status(200).send(response[response.length - 1]);
+        //  console.log(response[response.length - 1]);
+        return response[response.length - 1];
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
   getProfile: async (req, res) => {
     try {
       const user = await req.user;
+
+      const donationsHistory = await DonationsHistoryDB.findAll({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      const lastDonation = donationsHistory[donationsHistory.length - 1];
+
       const userData = {
         name: user.name,
         surname: user.surname,
@@ -99,12 +144,42 @@ const controller = {
         birthDate: user.birthDate,
         bloodType: user.bloodType,
         weight: user.weight,
-        lastDonation: user.lastDonation,
+        lastDonation: lastDonation.dateOfDonation,
       };
+
       res.status(200).send(userData);
     } catch (err) {
       res.status(500).send(err);
     }
+
+    // try {
+    //   const lastDonation = await controller.getLastDonation(user);
+    //   console.log(lastDonation);
+    //   res.status(200).send(lastDonation);
+    // } catch (err) {
+    //   res.status(500).send(err);
+    // }
+    //const lastDonation = await controller.getLastDonation(user);
+    // controller.getLastDonation(user).then((lastDonation) => {
+    //   console.log(lastDonation);
+    // });
+    // console.log(lastDonation);
+    //   if (lastDonation) {
+    //     const userData = {
+    //       name: user.name,
+    //       surname: user.surname,
+    //       email: user.email,
+    //       phone: user.phone,
+    //       city: user.city,
+    //       birthDate: user.birthDate,
+    //       bloodType: user.bloodType,
+    //       weight: user.weight,
+    //       lastDonation: lastDonation.dateOfDonation,
+    //     };
+    //     res.status(200).send(userData);
+    //   } else res.status(500).send({ message: "Incomplet" });
+    // } else res.status(500).send({ message: "Incomplet total" });
+    //  res.status(200).send(typeof lastDonation);
   },
 
   updateProfile: async (req, res) => {
