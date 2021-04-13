@@ -114,12 +114,10 @@ const controller = {
       },
     })
       .then((response) => {
-        // res.status(200).send(response[response.length - 1]);
-        //  console.log(response[response.length - 1]);
-        return response[response.length - 1];
+        res.status(200).send(response[response.length - 1]);
       })
       .catch((err) => {
-        return err;
+        res.status(500).send(err);
       });
   },
 

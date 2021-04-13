@@ -1,24 +1,24 @@
 <template>
   <div>
-    <section class="flex flex-center text-center text-h2">
+    <section v-if="loaded" class="flex flex-center text-center text-h2">
       <div>
         {{ time.displayDays }}
-        <div class="text-subtitle1">days</div>
+        <div class="text-subtitle1">zile</div>
       </div>
       <span>:</span>
       <div>
         {{ time.displayHours }}
-        <div class="text-subtitle1">hours</div>
+        <div class="text-subtitle1">ore</div>
       </div>
       <span>:</span>
       <div>
         {{ time.displayMinutes }}
-        <div class="text-subtitle1">minutes</div>
+        <div class="text-subtitle1">minute</div>
       </div>
       <span>:</span>
       <div class="seconds">
         {{ time.displaySeconds }}
-        <div class="text-subtitle1">seconds</div>
+        <div class="text-subtitle1">secunde</div>
       </div>
     </section>
   </div>
@@ -34,7 +34,8 @@ export default {
         displayHours: 0,
         displayMinutes: 0,
         displaySeconds: 0
-      }
+      },
+      loaded: false
     };
   },
   computed: {
@@ -67,6 +68,8 @@ export default {
     formatNumber: num => (num < 10 ? "0" + num : num),
     showRemaining() {
       const timer = setInterval(() => {
+        this.loaded = true;
+
         const now = new Date();
         // const end = new Date(2021, 2, 29, 10, 10, 10, 10);
         const distance = this.end.getTime() - now.getTime();
