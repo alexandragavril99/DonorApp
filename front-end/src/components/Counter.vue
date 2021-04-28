@@ -1,24 +1,66 @@
 <template>
-  <div>
-    <section v-if="loaded" class="flex flex-center text-center text-h2">
-      <div>
-        {{ time.displayDays }}
-        <div class="text-subtitle1">zile</div>
+  <div class="q-pa-md">
+    <section
+      v-if="loaded"
+      class="flex flex-center text-center text-h2 justify-center"
+    >
+      <div class="text-primary" style="display:table;">
+        <div style="display: table-row;">
+          <div
+            class="text-weight-regular bg-secondary padding"
+            style="display: table-cell;"
+          >
+            {{ time.displayDays }}
+          </div>
+          <div style="display:table-cell;">:</div>
+        </div>
+        <div class="text-subtitle2 bg-secondary bordertime">
+          zile
+        </div>
       </div>
-      <span>:</span>
-      <div>
-        {{ time.displayHours }}
-        <div class="text-subtitle1">ore</div>
+
+      <div class="text-primary" style="display:table;">
+        <div style="display: table-row;">
+          <div
+            class="text-weight-regular bg-secondary padding"
+            style="display: table-cell;"
+          >
+            {{ time.displayHours }}
+          </div>
+          <div style="display:table-cell;">:</div>
+        </div>
+        <div class="text-subtitle2 bg-secondary bordertime">
+          ore
+        </div>
       </div>
-      <span>:</span>
-      <div>
-        {{ time.displayMinutes }}
-        <div class="text-subtitle1">minute</div>
+
+      <div class="text-primary" style="display:table;">
+        <div style="display: table-row;">
+          <div
+            class="text-weight-regular bg-secondary padding"
+            style="display: table-cell;"
+          >
+            {{ time.displayMinutes }}
+          </div>
+          <div style="display:table-cell; ">:</div>
+        </div>
+        <div class="text-subtitle2 bg-secondary bordertime">
+          minute
+        </div>
       </div>
-      <span>:</span>
-      <div class="seconds">
-        {{ time.displaySeconds }}
-        <div class="text-subtitle1">secunde</div>
+
+      <div class="text-primary" style="display:table;">
+        <div style="display: table-row;">
+          <div
+            class="text-weight-regular bg-secondary padding"
+            style="display: table-cell; "
+          >
+            {{ time.displaySeconds }}
+          </div>
+        </div>
+        <div class="text-subtitle2 bg-secondary bordertime">
+          secunde
+        </div>
       </div>
     </section>
   </div>
@@ -26,7 +68,16 @@
 
 <script>
 export default {
-  props: ["year", "month", "day", "hour", "minute", "second", "milisecond"],
+  props: [
+    "year",
+    "month",
+    "day",
+    "hour",
+    "minute",
+    "second",
+    "milisecond",
+    "state"
+  ],
   data() {
     return {
       time: {
@@ -73,9 +124,10 @@ export default {
         const now = new Date();
         // const end = new Date(2021, 2, 29, 10, 10, 10, 10);
         const distance = this.end.getTime() - now.getTime();
-
+        // console.log(distance);
         if (distance < 0) {
           clearInterval(timer);
+          this.changeState();
           return;
         }
 
@@ -88,6 +140,11 @@ export default {
         this.time.displayHours = this.formatNumber(hours);
         this.time.displayDays = this.formatNumber(days);
       }, 1000);
+    },
+    changeState: function() {
+      this.$emit("changeState", 1);
+      // this.title = "Vue Wizards";
+      // bus.$emit("titleChanged", "Vue Wizards");
     }
   }
 };
@@ -96,5 +153,16 @@ export default {
 <style scoped>
 .seconds {
   max-width: 60px;
+}
+
+.padding {
+  padding: 6px 6px 0px 6px;
+  border-radius: 5px 5px 0 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.bordertime {
+  border-radius: 0px 0px 5px 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 </style>

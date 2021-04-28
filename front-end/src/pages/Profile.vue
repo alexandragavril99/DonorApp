@@ -252,6 +252,7 @@
 <script>
 import { ParticlesBg } from "particles-bg-vue";
 import axios from "axios";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Profile",
@@ -288,6 +289,8 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setUser"]),
+    ...mapActions(["fetchUser"]),
     calculateAge() {
       let birthDate2 = new Date(this.user.birthDate);
       let diff_ms = Date.now() - birthDate2.getTime();
@@ -362,7 +365,17 @@ export default {
       this.userPassword.newPassword = "";
     }
   },
+  computed: {
+    ...mapGetters(["getUser"])
+  },
   created() {
+    // this.fetchUser().then(() => {
+    //   console.log(this.getUser);
+    //   Object.assign(this.user, this.getUser);
+    //   console.log(this.user);
+    //   this.user.age = this.calculateAge();
+    // });
+
     axios
       .get("http://localhost:8081/api/user/getProfile", {
         withCredentials: true

@@ -83,4 +83,9 @@ router.put(
 
 router.get("/getLastDonation", checkNotAuth, userController.getLastDonation);
 
+router.get(
+  "/calculateAppointmentsNumber",
+  userController.calculateAppointmentsNumber
+);
+
 module.exports = router;

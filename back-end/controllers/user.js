@@ -344,6 +344,44 @@ const controller = {
       res.status(400).send({ message: "The id does not exist!" });
     }
   },
+
+  calculateAppointmentsNumber: async (req, res) => {
+    const currentDate = {
+      date: req.query.date,
+    };
+    console.log(req.query.date);
+    let hoursArray = [
+      "7:30",
+      "8:30",
+      "9:30",
+      "10:30",
+      "11:30",
+      "12:30",
+      "13:30",
+    ];
+    let left = [4, 4, 4, 4, 4, 4, 4];
+    const appointmentsDate = await AppointmentDB.findAll({
+      where: {
+        date: currentDate.date,
+      },
+    });
+
+    console.log(appointmentsDate);
+    if (appointmentsDate) {
+      hoursArray.forEach((element, index) => {
+        appointmentsDate.forEach((appointment) => {
+          if (appointment.schedulingTime == element) {
+            left[index]--;
+          }
+        });
+      });
+    }
+    try {
+      res.status(200).send(left);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
 };
 
 module.exports = controller;

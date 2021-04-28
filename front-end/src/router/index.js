@@ -1,3 +1,4 @@
+import { Cookies } from "quasar";
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -24,6 +25,16 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  });
+
+  Router.beforeEach((to, from, next) => {
+    const publicRoutes = ["login", "register"];
+    const loggedIn = Cookies.get("cookieLogin") ? true : false;
+    if (!loggedIn && !publicRoutes.includes(to.name)) {
+      next({ name: "login" });
+    } else {
+      next();
+    }
   });
 
   return Router;
