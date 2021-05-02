@@ -32,6 +32,13 @@ const routes = [
     path: "/appointment",
     component: () => import("layouts/MenuLayout.vue"),
     children: [{ path: "", component: () => import("pages/Appointment.vue") }]
+  },
+  {
+    path: "/viewAppointments",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/ViewAppointments.vue") }
+    ]
   }
 ];
 

@@ -1,6 +1,7 @@
 const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
 const DonationsHistoryDB = require("../models").DonationsHistory;
+const EmployeeDB = require("../models").Employee;
 const bcrypt = require("bcrypt");
 
 const controller = {
@@ -149,35 +150,6 @@ const controller = {
     } catch (err) {
       res.status(500).send(err);
     }
-
-    // try {
-    //   const lastDonation = await controller.getLastDonation(user);
-    //   console.log(lastDonation);
-    //   res.status(200).send(lastDonation);
-    // } catch (err) {
-    //   res.status(500).send(err);
-    // }
-    //const lastDonation = await controller.getLastDonation(user);
-    // controller.getLastDonation(user).then((lastDonation) => {
-    //   console.log(lastDonation);
-    // });
-    // console.log(lastDonation);
-    //   if (lastDonation) {
-    //     const userData = {
-    //       name: user.name,
-    //       surname: user.surname,
-    //       email: user.email,
-    //       phone: user.phone,
-    //       city: user.city,
-    //       birthDate: user.birthDate,
-    //       bloodType: user.bloodType,
-    //       weight: user.weight,
-    //       lastDonation: lastDonation.dateOfDonation,
-    //     };
-    //     res.status(200).send(userData);
-    //   } else res.status(500).send({ message: "Incomplet" });
-    // } else res.status(500).send({ message: "Incomplet total" });
-    //  res.status(200).send(typeof lastDonation);
   },
 
   updateProfile: async (req, res) => {
@@ -378,6 +350,67 @@ const controller = {
     }
     try {
       res.status(200).send(left);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getLastAppointment: async (req, res) => {
+    try {
+      const user = await req.user;
+      const appointments = await AppointmentDB.findAll({
+        where: {
+          userId: user.id,
+        },
+        include: [
+          {
+            model: UserDB,
+          },
+        ],
+      });
+      res.status(200).send(appointments);
+      // const appointments = await AppointmentDB.findAll({
+      //   where: {
+      //     userId: user.id,
+      //   },
+      // });
+      // const lastAppointment = appointments[appointments.length - 1];
+      // if (lastAppointment.doctorId) {
+      //   const doctor = await UserDB.findOne({
+      //     where: {
+      //       id: lastAppointment.doctorId,
+      //     },
+      //   });
+      //   lastAppointment.doctorName = doctor.name + " " + doctor.surname;
+      // } else {
+      //   lastAppointment.doctorName = "Nealocat momentan";
+      // }
+
+      // res.status(200).send({
+      //   date: lastAppointment.date,
+      //   schedulingTime: lastAppointment.schedulingTime,
+      //   doctorName: lastAppointment.doctorName,
+      // });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  deleteAppointment: async (req, res) => {
+    try {
+      const user = await req.user;
+      const appointment = await AppointmentDB.findOne({
+        where: {
+          userId: user.id,
+          id: req.params.id,
+        },
+      });
+      if (appointment) {
+        await appointment.destroy();
+        res.status(200).send({ message: "The appointment was canceled." });
+      } else {
+        res.status(400).send({ message: "The appointment does not exist." });
+      }
     } catch (err) {
       res.status(500).send(err);
     }

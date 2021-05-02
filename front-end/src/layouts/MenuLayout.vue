@@ -17,14 +17,51 @@
             clickable
             @click="$router.push('/').catch(err => {})"
           />
-          <q-tab
+          <q-btn-dropdown auto-close stretch flat clickable>
+            <template v-slot:label>
+              <div>
+                <div class="row justify-around items-center no-wrap">
+                  <q-icon name="event" />
+                </div>
+                <div class="row items-center no-wrap">
+                  Programări
+                </div>
+              </div>
+            </template>
+
+            <q-list>
+              <q-item
+                name="appointment"
+                label="Programează-te"
+                class="bg-secondary text-primary text-weight-medium"
+                clickable
+                @click="appointment"
+              >
+                <q-item-section style="text-align:center;"
+                  >Programează-te</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                name="viewAppointments"
+                class="bg-secondary text-primary text-weight-medium"
+                clickable
+                @click="viewAppointments"
+              >
+                <q-item-section style="text-align:center;"
+                  >Vizualizează programări</q-item-section
+                >
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+          <!-- <q-tab
             name="appointment"
             label="Programează-te"
             icon="event"
             class="tabsList"
             clickable
             @click="$router.push('/appointment').catch(err => {})"
-          />
+          /> -->
           <q-tab
             name="profile"
             label="Profil"
@@ -170,7 +207,14 @@ export default {
           });
         });
     },
-
+    appointment() {
+      this.$router.push("/appointment").catch(err => {});
+      this.tab = "appointment";
+    },
+    viewAppointments() {
+      this.$router.push("/viewAppointments").catch(err => {});
+      this.tab = "appointment";
+    },
     profile() {
       if (this.$router.path !== "/profile") {
         this.$router.push("/profile");

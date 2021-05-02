@@ -88,4 +88,16 @@ router.get(
   userController.calculateAppointmentsNumber
 );
 
+router.get(
+  "/getLastAppointment",
+  checkNotAuth,
+  userController.getLastAppointment
+);
+
+router.delete(
+  "/deleteAppointment/:id",
+  checkNotAuth,
+  userController.deleteAppointment
+);
+
 module.exports = router;

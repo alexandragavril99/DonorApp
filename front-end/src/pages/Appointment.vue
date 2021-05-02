@@ -1,7 +1,18 @@
 <template>
   <div>
-    <h6 class="q-pa-md flex flex-center" style="margin:0; padding-bottom:0;">
+    <h6
+      v-if="state == 0"
+      class="q-pa-md flex flex-center"
+      style="margin:0; padding-bottom:0;"
+    >
       Timp rămas până la următoarea programare:
+    </h6>
+    <h6
+      v-else
+      class="q-pa-md flex flex-center"
+      style="margin:0; padding-bottom:0;"
+    >
+      Timpul a expirat!
     </h6>
     <Counter
       v-if="loaded"
@@ -15,8 +26,11 @@
       :state="state"
       v-on:changeState="updateState($event)"
     />
-    <h6 class="q-pa-md flex flex-center" style="margin:0;">
-      Momentan formularul nu este disponibil. Reveniți după timpul precizat :)
+    <h6 v-if="state == 0" class="q-pa-md flex flex-center" style="margin:0;">
+      Momentan formularul nu este disponibil. Vă așteptăm după timpul precizat.
+    </h6>
+    <h6 v-else class="q-pa-md flex flex-center" style="margin:0;">
+      Realizează o programare completând formularul de mai jos.
     </h6>
     <div class="form-card rounded-borders">
       <div class="q-pa-md flex flex-center">
@@ -71,7 +85,7 @@
           </q-item-section>
         </div>
       </div>
-      <div class="flex flex-center q-pa-md">
+      <div class="flex flex-center q-pa-md" style="padding-bottom:3%;">
         <q-btn
           label="Programează-te!"
           type="submit"
@@ -83,20 +97,20 @@
     </div>
     <q-dialog v-model="confirm" persistent>
       <q-card>
-        <q-card-section class="row items-center">
+        <q-card-section class="row items-center flex flex-center">
           <q-avatar
             icon="notification_important"
             color="primary"
             text-color="white"
           />
-          <span class="q-ml-sm"
-            >Programare selectată pentru data: {{ date }} și ora:
-            {{ currentHour }}. Confirmi programarea?</span
+          <span class="q-ml-sm" style="text-align: center;s"
+            >Programare selectată pentru data: <strong> {{ date }} </strong>și
+            ora: <strong>{{ currentHour }}.</strong></span
           >
+          <span class="q-ml-sm"> Confirmi programarea?</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Nu" color="primary" v-close-popup />
           <q-btn
             flat
             label="Da"
@@ -104,6 +118,7 @@
             v-close-popup
             @click="createAppointment"
           />
+          <q-btn flat label="Nu" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -251,7 +266,7 @@ export default {
   max-width: 70%;
   margin: 0 auto;
   background: #f5f5f5;
-  margin-bottom: 5%;
+  margin-bottom: 3%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 </style>

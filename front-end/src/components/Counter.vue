@@ -143,8 +143,6 @@ export default {
     },
     changeState: function() {
       this.$emit("changeState", 1);
-      // this.title = "Vue Wizards";
-      // bus.$emit("titleChanged", "Vue Wizards");
     }
   }
 };
