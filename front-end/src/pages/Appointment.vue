@@ -1,5 +1,12 @@
 <template>
   <div>
+    <particles-bg
+      num="10"
+      type="custom"
+      color="#FFFFFF"
+      :bg="true"
+      :config="config"
+    />
     <h6
       v-if="state == 0"
       class="q-pa-md flex flex-center"
@@ -126,12 +133,14 @@
 </template>
 
 <script>
+import { ParticlesBg } from "particles-bg-vue";
 import Counter from "../components/Counter.vue";
 import axios from "axios";
 export default {
   name: "Appointment",
   components: {
-    Counter
+    Counter,
+    ParticlesBg
   },
   data() {
     return {
@@ -143,6 +152,20 @@ export default {
       currentHour: "7:30",
       hoursArray: ["7:30", "8:30", "9:30", "10:30", "11:30", "12:30", "13:30"],
       left: null,
+      config: {
+        num: [2, 3],
+        // rps: 0.1,
+        radius: [5, 35],
+        life: [1.5, 3],
+        v: [0, 0],
+        // tha: [-30, 30],
+        alpha: [0.6, 0],
+        scale: [0.1, 0.4],
+        color: "#b22222",
+        position: "all",
+        cross: "dead",
+        random: 15
+      },
       currentLocale: {
         days: "Duminică_Luni_Marți_Miercuri_Joi_Vineri_Sâmbătă_Duminică".split(
           "_"

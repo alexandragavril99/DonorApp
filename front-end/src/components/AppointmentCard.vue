@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md" :key="componentKey">
+  <div class="q-pa-md">
     <q-card class="my-card">
       <q-card-section class="bg-secondary">
         <h6
@@ -116,11 +116,10 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["id", "date", "hour", "doctor", "currentDate"],
+  props: ["id", "date", "hour", "doctor", "currentDate", "state"],
   data() {
     return {
       confirm: false,
-      componentKey: 0
     };
   },
   methods: {
@@ -136,7 +135,7 @@ export default {
             icon: "done",
             message: "Programare anulată"
           });
-          this.forceRerender();
+          this.changeState();
         })
         .catch(err => {
           this.$q.notify({
@@ -147,9 +146,9 @@ export default {
           });
         });
     },
-    forceRerender() {
-      this.componentKey += 1;
-    }
+    changeState: function() {
+      this.$emit("changeState", 1);
+    },
   }
 };
 </script>
