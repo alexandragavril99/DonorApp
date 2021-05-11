@@ -17,7 +17,13 @@
             clickable
             @click="$router.push('/').catch(err => {})"
           />
-          <q-btn-dropdown auto-close stretch flat clickable>
+          <q-btn-dropdown
+            v-if="admin == false"
+            auto-close
+            stretch
+            flat
+            clickable
+          >
             <template v-slot:label>
               <div>
                 <div class="row justify-around items-center no-wrap">
@@ -54,6 +60,15 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
+          <q-tab
+            v-else
+            name="appointmentsDoctor"
+            label="Programări donatori"
+            icon="event"
+            class="tabsList"
+            clickable
+            @click="$router.push('/doctorAppointment').catch(err => {})"
+          ></q-tab>
           <!-- <q-tab
             name="appointment"
             label="Programează-te"
@@ -179,7 +194,8 @@ export default {
   data() {
     return {
       tab: "home",
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      admin: false
     };
   },
 
@@ -224,6 +240,14 @@ export default {
   },
   created() {
     console.log(this.$isMobile());
+    axios
+      .get("http://localhost:8081/api/user/getUser", { withCredentials: true })
+      .then(response => {
+        const user = response.data;
+        if (user.isDoctor != null) {
+          this.admin = user.isDoctor;
+        }
+      });
   }
 };
 </script>

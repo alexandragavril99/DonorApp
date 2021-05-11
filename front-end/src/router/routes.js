@@ -39,6 +39,13 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/ViewAppointments.vue") }
     ]
+  },
+  {
+    path: "/doctorAppointment",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/DoctorAppointment.vue") }
+    ]
   }
 ];
 

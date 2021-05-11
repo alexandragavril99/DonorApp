@@ -75,12 +75,6 @@ router.post("/addAppointment", checkNotAuth, userController.addAppointment);
 
 router.get("/getAllApointments", checkAdmin, userController.getAllAppointments);
 
-router.put(
-  "/updateAppointmentsDoctorById/:id",
-  checkAdmin,
-  userController.updateAppointmentsDoctorById
-);
-
 router.get("/getLastDonation", checkNotAuth, userController.getLastDonation);
 
 router.get(
@@ -100,4 +94,6 @@ router.delete(
   userController.deleteAppointment
 );
 
-module.exports = router;
+router.get("/getUser", checkNotAuth, userController.getUser);
+
+module.exports = { router, checkAuth, checkNotAuth, checkAdmin };

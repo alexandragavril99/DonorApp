@@ -1,7 +1,6 @@
 const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
 const DonationsHistoryDB = require("../models").DonationsHistory;
-const EmployeeDB = require("../models").Employee;
 const bcrypt = require("bcrypt");
 
 const controller = {
@@ -126,27 +125,42 @@ const controller = {
     try {
       const user = await req.user;
 
-      const donationsHistory = await DonationsHistoryDB.findAll({
-        where: {
-          userId: user.id,
-        },
-      });
+      if (user.isDoctor) {
+        const userData = {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          phone: user.phone,
+          city: user.city,
+          birthDate: user.birthDate,
+          bloodType: user.bloodType,
+          weight: user.weight,
+        };
 
-      const lastDonation = donationsHistory[donationsHistory.length - 1];
+        res.status(200).send(userData);
+      } else {
+        const donationsHistory = await DonationsHistoryDB.findAll({
+          where: {
+            userId: user.id,
+          },
+        });
 
-      const userData = {
-        name: user.name,
-        surname: user.surname,
-        email: user.email,
-        phone: user.phone,
-        city: user.city,
-        birthDate: user.birthDate,
-        bloodType: user.bloodType,
-        weight: user.weight,
-        lastDonation: lastDonation.dateOfDonation,
-      };
+        const lastDonation = donationsHistory[donationsHistory.length - 1];
 
-      res.status(200).send(userData);
+        const userData = {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          phone: user.phone,
+          city: user.city,
+          birthDate: user.birthDate,
+          bloodType: user.bloodType,
+          weight: user.weight,
+          lastDonation: lastDonation.dateOfDonation,
+        };
+
+        res.status(200).send(userData);
+      }
     } catch (err) {
       res.status(500).send(err);
     }
@@ -299,24 +313,6 @@ const controller = {
       .catch((err) => res.status(500).send(err));
   },
 
-  updateAppointmentsDoctorById: async (req, res) => {
-    const user = await req.user;
-    const appointment = await AppointmentDB.findOne({
-      where: { id: req.params.id },
-    });
-
-    if (appointment) {
-      appointment
-        .update({
-          doctorId: user.id,
-        })
-        .then(() => res.status(200).send({ message: "Appointment taken!" }))
-        .catch((err) => res.status(500).send(err));
-    } else {
-      res.status(400).send({ message: "The id does not exist!" });
-    }
-  },
-
   calculateAppointmentsNumber: async (req, res) => {
     const currentDate = {
       date: req.query.date,
@@ -369,28 +365,6 @@ const controller = {
         ],
       });
       res.status(200).send(appointments);
-      // const appointments = await AppointmentDB.findAll({
-      //   where: {
-      //     userId: user.id,
-      //   },
-      // });
-      // const lastAppointment = appointments[appointments.length - 1];
-      // if (lastAppointment.doctorId) {
-      //   const doctor = await UserDB.findOne({
-      //     where: {
-      //       id: lastAppointment.doctorId,
-      //     },
-      //   });
-      //   lastAppointment.doctorName = doctor.name + " " + doctor.surname;
-      // } else {
-      //   lastAppointment.doctorName = "Nealocat momentan";
-      // }
-
-      // res.status(200).send({
-      //   date: lastAppointment.date,
-      //   schedulingTime: lastAppointment.schedulingTime,
-      //   doctorName: lastAppointment.doctorName,
-      // });
     } catch (err) {
       res.status(500).send(err);
     }
@@ -411,6 +385,15 @@ const controller = {
       } else {
         res.status(400).send({ message: "The appointment does not exist." });
       }
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getUser: async (req, res) => {
+    try {
+      const user = await req.user;
+      res.status(200).send(user);
     } catch (err) {
       res.status(500).send(err);
     }
