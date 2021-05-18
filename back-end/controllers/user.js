@@ -1,7 +1,9 @@
 const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
 const DonationsHistoryDB = require("../models").DonationsHistory;
+const EmployeeDB = require("../models").Employee;
 const bcrypt = require("bcrypt");
+const Sequelize = require("sequelize");
 
 const controller = {
   register: async (req, res) => {
@@ -360,7 +362,14 @@ const controller = {
         },
         include: [
           {
-            model: UserDB,
+            model: EmployeeDB,
+            attributes: ["id"],
+            include: [
+              {
+                model: UserDB,
+                attributes: ["id", "name", "surname"],
+              },
+            ],
           },
         ],
       });

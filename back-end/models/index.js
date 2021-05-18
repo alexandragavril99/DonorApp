@@ -30,8 +30,8 @@ EmployeesVacations.belongsTo(Employee, { foreignKey: "userId" });
 User.hasMany(Appointment, { foreignKey: "userId" });
 Appointment.belongsTo(User, { foreignKey: "userId" });
 
-User.hasMany(Appointment, { foreignKey: "doctorId" });
-Appointment.belongsTo(User, { foreignKey: "doctorId" });
+Employee.hasMany(Appointment, { foreignKey: "doctorId" });
+Appointment.belongsTo(Employee, { foreignKey: "doctorId" });
 
 User.hasMany(DonationsHistory, { foreignKey: "userId" });
 DonationsHistory.belongsTo(User, { foreignKey: "userId" });

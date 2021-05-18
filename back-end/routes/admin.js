@@ -10,16 +10,30 @@ router.get(
   adminController.getNewAppointments
 );
 
-router.get(
-  "/getAssumedAppointments",
-  checkNotAuth,
-  adminController.getAssumedAppointments
-);
-
 router.put(
   "/updateAppointmentsDoctorById/:id",
   checkNotAuth,
   adminController.updateAppointmentsDoctorById
 );
+
+router.get(
+  "/getAllAssumedAppointments",
+  checkNotAuth,
+  adminController.getAllAssumedAppointments
+);
+
+router.get(
+  "/getDonorProfile/:id",
+  checkNotAuth,
+  adminController.getDonorProfile
+);
+
+router.get(
+  "/getAllDonations/:id",
+  checkNotAuth,
+  adminController.getAllDonations
+);
+
+router.put("/updateDonor/:id", checkNotAuth, adminController.updateDonor);
 
 module.exports = router;
