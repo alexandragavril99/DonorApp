@@ -119,7 +119,7 @@ export default {
   props: ["id", "date", "hour", "doctor", "currentDate", "state"],
   data() {
     return {
-      confirm: false,
+      confirm: false
     };
   },
   methods: {
@@ -148,7 +148,7 @@ export default {
     },
     changeState: function() {
       this.$emit("changeState", 1);
-    },
+    }
   }
 };
 </script>

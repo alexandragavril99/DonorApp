@@ -72,7 +72,8 @@ export default {
         {
           name: "doctorName",
           label: "Nume Doctor",
-          field: row => row.user.name + " " + row.user.surname,
+          field: row =>
+            row.employee.user.name + " " + row.employee.user.surname,
           align: "center",
           sortable: true
         },
@@ -117,7 +118,9 @@ export default {
           this.appointment.doctorName = "Nealocat momentan";
         } else
           this.appointment.doctorName =
-            this.appointment.user.name + " " + this.appointment.user.surname;
+            this.appointment.employee.user.name +
+            " " +
+            this.appointment.employee.user.surname;
         this.data.splice(this.data.length - 1, 1);
       } else this.appointment = {};
       this.currentDate = false;
@@ -137,6 +140,7 @@ export default {
       .then(response => {
         if (response.data.length != 0) {
           this.data = response.data;
+          console.log(response.data);
           Object.assign(
             this.appointment,
             response.data[response.data.length - 1]
@@ -145,7 +149,9 @@ export default {
             this.appointment.doctorName = "Nealocat momentan";
           } else
             this.appointment.doctorName =
-              this.appointment.user.name + " " + this.appointment.user.surname;
+              this.appointment.employee.user.name +
+              " " +
+              this.appointment.employee.user.surname;
 
           this.data.splice(this.data.length - 1, 1);
 

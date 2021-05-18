@@ -18,7 +18,6 @@
           <q-tab-panel name="newAppointments">
             <q-table
               grid
-              title="Treats"
               :data="data"
               :columns="columns"
               row-key="name"
@@ -29,7 +28,6 @@
             >
               <template v-slot:top-right>
                 <q-input
-                  borderless
                   dense
                   debounce="300"
                   v-model="filter"
@@ -40,109 +38,442 @@
                   </template>
                 </q-input>
               </template>
-
+              <template v-slot:item="props">
+                <div
+                  class="q-pa-md col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
+                >
+                  <q-card class="q-pa-xs">
+                    <q-list dense>
+                      <q-item
+                        v-for="col in props.cols.filter(
+                          col => col.name !== 'desc'
+                        )"
+                        :key="col.name"
+                      >
+                        <q-item-section class="q-pa-xs">
+                          <q-item-label class="text-weight-regular">{{
+                            col.label
+                          }}</q-item-label>
+                          <q-item-label
+                            caption
+                            class="text-primary text-weight-medium"
+                            >{{ col.value }}</q-item-label
+                          >
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                    <q-card-section>
+                      <q-btn
+                        color="primary"
+                        @click="
+                          (confirm = true) && (currentAppointment = props.row)
+                        "
+                        >PREIA PROGRAMARE</q-btn
+                      >
+                    </q-card-section>
+                  </q-card>
+                </div>
+              </template>
             </q-table>
           </q-tab-panel>
 
           <q-tab-panel name="assumedAppointments">
-            <div class="text-h6">Programări asumate</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <q-table
+              grid
+              :data="newData"
+              :columns="columns2"
+              row-key="name"
+              :filter="filter"
+              hide-header
+              :rows-per-page-options="[4, 8, 16, 0]"
+              no-data-label="Nu există nicio programare nouă înregistrată."
+            >
+              <template v-slot:top-right>
+                <q-input
+                  dense
+                  debounce="300"
+                  v-model="filter"
+                  placeholder="Search"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </template>
+              <template v-slot:item="props">
+                <div
+                  class="q-pa-md col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
+                >
+                  <q-card class="q-pa-xs">
+                    <q-list dense>
+                      <q-item
+                        v-for="col in props.cols.filter(
+                          col => col.name !== 'desc'
+                        )"
+                        :key="col.name"
+                      >
+                        <q-item-section class="q-pa-xs">
+                          <q-item-label class="text-weight-regular">{{
+                            col.label
+                          }}</q-item-label>
+                          <q-item-label
+                            caption
+                            class="text-primary text-weight-medium"
+                            >{{ col.value }}</q-item-label
+                          >
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                    <q-card-section>
+                      <q-btn color="primary" @click="getDonorProfile(props.row)"
+                        >DETALII DONATOR</q-btn
+                      >
+                    </q-card-section>
+                  </q-card>
+                </div>
+              </template>
+            </q-table>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
+
+      <q-dialog v-model="confirm" persistent>
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar
+              icon="notification_important"
+              color="primary"
+              text-color="white"
+            />
+            <span class="q-ml-sm">Doriți să preluați programarea?</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              label="DA"
+              color="primary"
+              @click="takeAppointment"
+              v-close-popup
+            />
+            <q-btn flat label="NU" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="prompt" persistent>
+        <q-card style="min-width: 350px;">
+          <q-card-section>
+            <div class="text-h6 flex flex-center">Date donator</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.name"
+              autofocus
+              label="Prenume"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.surname"
+              autofocus
+              label="Nume"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.email"
+              autofocus
+              label="Email"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.phone"
+              autofocus
+              label="Telefon"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.city"
+              autofocus
+              label="Oraș"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.birthDate"
+              autofocus
+              label="Data nașterii"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.weight"
+              autofocus
+              label="Greutate"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+            <q-input
+              outlined
+              dense
+              v-model="donorProfile.bloodType"
+              autofocus
+              label="Grupă sanguină"
+              stack-label
+              @keyup.enter="prompt = false"
+              style="margin-bottom:2%;"
+            />
+
+            <div class="flex flex-center">
+              <label for="">Apt de donare?</label>
+              <div>
+                <q-radio v-model="shape" val="da" label="Da" />
+                <q-radio v-model="shape" val="nu" label="Nu" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <div class="flex flex-center">
+            <q-btn class="bg-primary text-white" @click="showLastDonations"
+              >Vizualizare donări anterioare</q-btn
+            >
+          </div>
+
+          <q-card-actions align="right" class="text-primary">
+            <q-btn flat label="Modifică detalii" v-close-popup />
+            <q-btn flat label="Cancel" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="show">
+        <q-card>
+          <q-table
+            title="Istoric donări"
+            :data="dataDonor"
+            :columns="columns3"
+            row-key="name"
+            no-data-label="Nu există alte programări trecute."
+          />
+
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
+      shape: "",
       tab: "newAppointments",
+      currentAppointment: {},
+      show: false,
+      confirm: false,
+      prompt: false,
       filter: "",
       columns: [
         {
-          name: "desc",
+          name: "date",
           required: true,
-          label: "Dessert (100g serving)",
+          label: "Data programării",
           align: "left",
-          field: row => row.name,
+          field: row => row.date,
           format: val => `${val}`,
           sortable: true
         },
         {
-          name: "calories",
+          name: "hour",
           align: "center",
-          label: "Calories",
-          field: "calories",
+          label: "Ora programării",
+          field: "schedulingTime",
           sortable: true
         },
-        { name: "fat", label: "Fat (g)", field: "fat", sortable: true },
-        { name: "carbs", label: "Carbs (g)", field: "carbs" }
-      ],
-      data: [
         {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65
+          name: "donorName",
+          label: "Nume donator",
+          field: row => row.user.name + " " + row.user.surname,
+          sortable: true
         }
-      ]
+      ],
+      columns2: [
+        {
+          name: "date",
+          required: true,
+          label: "Data programării",
+          align: "left",
+          field: row => row.date,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "hour",
+          align: "center",
+          label: "Ora programării",
+          field: "schedulingTime",
+          sortable: true
+        },
+        {
+          name: "donorName",
+          label: "Nume donator",
+          field: row => row.user.name + " " + row.user.surname,
+          sortable: true
+        },
+        {
+          name: "isCompleted",
+          label: "Este finalizată?",
+          field: "isCompleted",
+          format: val => (val ? "Da" : "Nu")
+        }
+      ],
+      columns3: [
+        {
+          name: "date",
+          required: true,
+          label: "Data",
+          align: "left",
+          field: row => row.date,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "hour",
+          align: "center",
+          label: "Ora programării",
+          field: "schedulingTime",
+          sortable: true
+        },
+        {
+          name: "doctorName",
+          label: "Nume doctor",
+          field: row =>
+            row.employee.user.name + " " + row.employee.user.surname,
+          sortable: true
+        },
+        {
+          name: "isCompleted",
+          label: "Este finalizată?",
+          field: "isCompleted",
+          format: val => (val ? "Da" : "Nu")
+        }
+      ],
+      data: [],
+      newData: [],
+      dataDonor: [],
+      donorProfile: {}
     };
+  },
+  methods: {
+    takeAppointment() {
+      console.log(this.currentAppointment.id);
+      axios
+        .put(
+          `http://localhost:8081/api/admin/updateAppointmentsDoctorById/${this.currentAppointment.id}`,
+          {},
+          { withCredentials: true }
+        )
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Programare preluata!"
+          });
+
+          let index = this.data.findIndex(
+            x => x.id === this.currentAppointment.id
+          );
+
+          this.data.splice(index, 1);
+          console.log(this.data);
+          this.currentAppointment = {};
+        })
+        .catch(err => console.log(err));
+    },
+    getDonorProfile(row) {
+      this.prompt = true;
+      axios
+        .get(`http://localhost:8081/api/admin/getDonorProfile/${row.user.id}`, {
+          withCredentials: true
+        })
+        .then(response => {
+          this.donorProfile = response.data;
+          console.log(this.donorProfile);
+          if (this.donorProfile.canDonate) {
+            this.shape = "da";
+          } else {
+            this.shape = "nu";
+          }
+        })
+        .catch(err => console.log(err));
+    },
+    showLastDonations() {
+      this.show = true;
+      axios
+        .get(
+          `http://localhost:8081/api/admin/getAllDonations/${this.donorProfile.id}`,
+          { withCredentials: true }
+        )
+        .then(response => {
+          this.dataDonor = response.data;
+        })
+        .catch(err => console.log(err));
+    }
+  },
+  created() {
+    axios
+      .get("http://localhost:8081/api/admin/getNewAppointments", {
+        withCredentials: true
+      })
+      .then(response => {
+        console.log(response.data);
+        this.data = response.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    axios
+      .get("http://localhost:8081/api/admin/getAllAssumedAppointments", {
+        withCredentials: true
+      })
+      .then(response => {
+        this.newData = response.data;
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>
