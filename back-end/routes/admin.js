@@ -36,4 +36,10 @@ router.get(
 
 router.put("/updateDonor/:id", checkNotAuth, adminController.updateDonor);
 
+router.put(
+  "/updateAppointment/:id",
+  checkNotAuth,
+  adminController.updateAppointment
+);
+
 module.exports = router;

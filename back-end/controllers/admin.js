@@ -2,6 +2,7 @@ const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
 const Sequelize = require("sequelize");
 const EmployeeDB = require("../models").Employee;
+const DonationsHistoryDB = require("../models").DonationsHistory;
 const Op = Sequelize.Op;
 
 const controller = {
@@ -205,6 +206,44 @@ const controller = {
     } else {
       res.status(400).send(errors);
       console.log(errors);
+    }
+  },
+
+  updateAppointment: async (req, res) => {
+    try {
+      const appointment = await AppointmentDB.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (appointment) {
+        appointment
+          .update({
+            wasPresent: req.body.wasPresent,
+            isCompleted: req.body.isCompleted,
+          })
+          .then(() => {
+            res.status(200).send({ message: "Appointment updated!" });
+            if (req.body.isCompleted) {
+              const donation = {
+                dateOfDonation: appointment.date,
+                userId: appointment.userId,
+              };
+              DonationsHistoryDB.create({
+                dateOfDonation: appointment.date,
+                userId: appointment.userId,
+              })
+                .then(() =>
+                  res.status(200).send({ message: "Donation added." })
+                )
+                .catch((err) => res.status(500).send(err));
+            }
+          })
+          .catch((err) => res.status(500).send(err));
+      }
+    } catch (err) {
+      res.status(500).send(err);
     }
   },
 };

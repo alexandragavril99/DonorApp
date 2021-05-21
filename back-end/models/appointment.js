@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       date: DataTypes.STRING,
       schedulingTime: DataTypes.STRING,
+      wasPresent: DataTypes.BOOLEAN,
       isCompleted: DataTypes.BOOLEAN,
     },
     {

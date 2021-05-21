@@ -105,6 +105,12 @@
                   class="q-pa-md col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
                 >
                   <q-card class="q-pa-xs">
+                    <q-btn
+                      color="primary"
+                      round
+                      icon="edit"
+                      @click="openEditDialog(props.row)"
+                    />
                     <q-list dense>
                       <q-item
                         v-for="col in props.cols.filter(
@@ -265,7 +271,12 @@
           </div>
 
           <q-card-actions align="right" class="text-primary">
-            <q-btn flat label="Modifică detalii" v-close-popup />
+            <q-btn
+              flat
+              label="Modifică detalii"
+              @click="updateUser"
+              v-close-popup
+            />
             <q-btn flat label="Cancel" v-close-popup />
           </q-card-actions>
         </q-card>
@@ -286,6 +297,50 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+      <q-dialog v-model="edit">
+        <q-card style="min-width: 300px; min-height: 300px;">
+          <q-card-section>
+            <div class="text-h6 flex flex-center">Date donator</div>
+          </q-card-section>
+          <q-card-section>
+            <div class="flex flex-center column">
+              <div
+                style="display: flex; flex-direction: column; align-items: center; margin-bottom: 3%;"
+              >
+                <div>
+                  <label for="">S-a prezentat?</label>
+                </div>
+                <div>
+                  <q-radio v-model="present" val="da" label="Da" />
+                  <q-radio v-model="present" val="nu" label="Nu" />
+                </div>
+              </div>
+              <div
+                style="display: flex; flex-direction: column; align-items: center;"
+              >
+                <div>
+                  <label for="">S-a finalizat donarea cu succes?</label>
+                </div>
+                <div>
+                  <q-radio v-model="completed" val="da" label="Da" />
+                  <q-radio v-model="completed" val="nu" label="Nu" />
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+
+          <q-card-actions align="center">
+            <q-btn
+              class="text-white bg-primary"
+              label="Modifică detalii"
+              v-close-popup
+              @click="editDetails"
+            />
+            <q-btn class="text-white bg-primary" label="Cancel" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -296,8 +351,11 @@ export default {
   data() {
     return {
       shape: "",
+      present: "",
+      completed: "",
       tab: "newAppointments",
       currentAppointment: {},
+      edit: false,
       show: false,
       confirm: false,
       prompt: false,
@@ -350,10 +408,16 @@ export default {
           sortable: true
         },
         {
+          name: "wasPresent",
+          label: "S-a prezentat?",
+          field: "wasPresent",
+          format: val => (val ? "Da" : val == 0 ? "Nu" : "-")
+        },
+        {
           name: "isCompleted",
           label: "Este finalizată?",
           field: "isCompleted",
-          format: val => (val ? "Da" : "Nu")
+          format: val => (val ? "Da" : val == 0 ? "Nu" : "-")
         }
       ],
       columns3: [
@@ -416,6 +480,7 @@ export default {
 
           this.data.splice(index, 1);
           console.log(this.data);
+          this.newData.push(this.currentAppointment);
           this.currentAppointment = {};
         })
         .catch(err => console.log(err));
@@ -448,6 +513,85 @@ export default {
           this.dataDonor = response.data;
         })
         .catch(err => console.log(err));
+    },
+    updateUser() {
+      if (this.shape === "da") {
+        this.donorProfile.canDonate = true;
+      } else if (this.shape === "nu") {
+        this.donorProfile.canDonate = null;
+      }
+
+      axios
+        .put(
+          `http://localhost:8081/api/admin/updateDonor/${this.donorProfile.id}`,
+          {
+            name: this.donorProfile.name,
+            surname: this.donorProfile.surname,
+            email: this.donorProfile.email,
+            phone: this.donorProfile.phone,
+            city: this.donorProfile.city,
+            weight: this.donorProfile.weight,
+            bloodType: this.donorProfile.bloodType,
+            canDonate: this.donorProfile.canDonate
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Profil modificat!"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    openEditDialog(row) {
+      this.edit = true;
+      this.currentAppointment = row;
+
+      if (row.isCompleted) {
+        this.completed = "da";
+      } else if (row.isCompleted == 0) {
+        this.completed = "nu";
+      } else {
+        this.completed = "";
+      }
+
+      if (row.wasPresent) {
+        this.present = "da";
+      } else if (row.wasPresent == 0) {
+        this.present = "nu";
+      } else {
+        this.present = "";
+      }
+    },
+    editDetails() {
+      let rowCompleted = this.completed === "da" ? 1 : 0;
+      let rowPresent = this.present === "da" ? 1 : 0;
+
+      axios
+        .put(
+          `http://localhost:8081/api/admin/updateAppointment/${this.currentAppointment.id}`,
+          {
+            isCompleted: rowCompleted,
+            wasPresent: rowPresent
+          },
+          { withCredentials: true }
+        )
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Detalii modificate"
+          });
+          this.currentAppointment.isCompleted = this.completed === "da" ? 1 : 0;
+          this.currentAppointment.wasPresent = this.present === "da" ? 1 : 0;
+        })
+        .catch(err => console.log(err));
     }
   },
   created() {
@@ -477,5 +621,3 @@ export default {
   }
 };
 </script>
-
-<style></style>

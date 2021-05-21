@@ -78,6 +78,13 @@ export default {
           sortable: true
         },
         {
+          name: "wasPresent",
+          label: "Prezent",
+          align: "center",
+          field: "wasPresent",
+          format: val => (val ? "Da" : "Nu")
+        },
+        {
           name: "finished",
           label: "Finalizată cu succes",
           align: "center",
