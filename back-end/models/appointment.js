@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       schedulingTime: DataTypes.STRING,
       wasPresent: DataTypes.BOOLEAN,
       isCompleted: DataTypes.BOOLEAN,
+      analysisBulletin: DataTypes.STRING,
     },
     {
       underscored: true,

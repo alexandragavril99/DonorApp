@@ -246,6 +246,30 @@ const controller = {
       res.status(500).send(err);
     }
   },
+
+  updateAnalysisBulletin: async (req, res) => {
+    try {
+      const appointment = await AppointmentDB.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (appointment) {
+        appointment
+          .update({
+            analysisBulletin: `${req.file.filename}`,
+          })
+          .then(() =>
+            res.status(200).send({ message: "Analyasis bulletin updated." })
+          )
+          .catch((err) => res.status(500).send(err));
+      } else {
+        res.status(400).send({ message: "The id does not exist." });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 
 module.exports = controller;

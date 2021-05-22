@@ -131,8 +131,19 @@
                       </q-item>
                     </q-list>
                     <q-card-section>
-                      <q-btn color="primary" @click="getDonorProfile(props.row)"
+                      <q-btn
+                        color="primary"
+                        @click="getDonorProfile(props.row)"
+                        style="margin-bottom: 3%;"
                         >DETALII DONATOR</q-btn
+                      >
+                      <q-btn
+                        color="primary"
+                        style="max-width: 180px;"
+                        @click="
+                          (loaded = true) && (currentAppointment = props.row)
+                        "
+                        >Încărcare analize</q-btn
                       >
                     </q-card-section>
                   </q-card>
@@ -341,6 +352,34 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+      <q-dialog v-model="loaded" persistent>
+        <q-card>
+          <q-card-section>
+            <div class="text-h6 flex flex-center">
+              Încărcare buletin analize
+            </div>
+          </q-card-section>
+
+          <q-card-section
+            ><q-uploader
+              style="max-width: 300px"
+              @added="file_selected"
+              :hide-upload-btn="true"
+          /></q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn
+              flat
+              label="Upload"
+              color="primary"
+              @click="onSubmit"
+              v-close-popup
+            />
+            <q-btn flat label="Cancel" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -353,6 +392,7 @@ export default {
       shape: "",
       present: "",
       completed: "",
+      loaded: false,
       tab: "newAppointments",
       currentAppointment: {},
       edit: false,
@@ -360,6 +400,8 @@ export default {
       confirm: false,
       prompt: false,
       filter: "",
+      filename: "",
+      check_if_document_upload: false,
       columns: [
         {
           name: "date",
@@ -592,7 +634,34 @@ export default {
           this.currentAppointment.wasPresent = this.present === "da" ? 1 : 0;
         })
         .catch(err => console.log(err));
-    }
+    },
+    file_selected(file) {
+      console.log(file);
+      this.filename = file[0];
+      this.check_if_document_upload = true;
+    },
+
+    onSubmit() {
+      const url = `http://localhost:8081/api/admin/updateAnalysisBulletin/${this.currentAppointment.id}`;
+      const file = new FormData();
+      const newName = this.currentAppointment.id + "_" + this.filename.name;
+      file.append("analysis", this.filename, newName);
+      console.log(file);
+      axios
+        .post(url, file, { withCredentials: true })
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Fișier încărcat cu succes!"
+          });
+          console.log("Succes!");
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created() {
     axios
