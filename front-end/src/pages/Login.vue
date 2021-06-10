@@ -48,6 +48,15 @@
         <div class="loginBtnDiv">
           <q-btn label="Login" type="submit" color="primary" class="loginBtn" />
         </div>
+        <div>
+          <span>Don't have an account? </span>
+          <span
+            clickable
+            @click="$router.push('/register').catch(err => {})"
+            class="text-primary text-weight-medium"
+            >Sign up here.</span
+          >
+        </div>
       </q-form>
     </div>
   </div>

@@ -16,6 +16,9 @@
           :date="appointment.date"
           :hour="appointment.schedulingTime"
           :doctor="appointment.doctorName"
+          :analysisBulletin="appointment.analysisBulletin"
+          :wasPresent="appointment.wasPresent"
+          :isCompleted="appointment.isCompleted"
           :currentDate="currentDate"
           v-on:changeState="updateState($event)"
         />

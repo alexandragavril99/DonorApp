@@ -224,20 +224,30 @@ const controller = {
             isCompleted: req.body.isCompleted,
           })
           .then(() => {
-            res.status(200).send({ message: "Appointment updated!" });
+            console.log("Appointment updated!");
             if (req.body.isCompleted) {
-              const donation = {
-                dateOfDonation: appointment.date,
-                userId: appointment.userId,
-              };
               DonationsHistoryDB.create({
                 dateOfDonation: appointment.date,
                 userId: appointment.userId,
               })
-                .then(() =>
-                  res.status(200).send({ message: "Donation added." })
-                )
+                .then(() => console.log("Donation added."))
                 .catch((err) => res.status(500).send(err));
+              UserDB.findOne({
+                where: {
+                  id: appointment.userId,
+                },
+              }).then((user) => {
+                user
+                  .update({
+                    scores: user.scores + 150,
+                  })
+                  .then(() => console.log("Score updated!"));
+              });
+              res.status(200).send({
+                message: "Appointment updated. Donation added. Score updated.",
+              });
+            } else {
+              res.status(200).send({ message: "Appointment updated!" });
             }
           })
           .catch((err) => res.status(500).send(err));

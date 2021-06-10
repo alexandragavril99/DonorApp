@@ -96,4 +96,8 @@ router.delete(
 
 router.get("/getUser", checkNotAuth, userController.getUser);
 
+router.get("/getUserScore", checkNotAuth, userController.getUserScore);
+
+router.get("/getPersonalScore", checkNotAuth, userController.getPersonalScore);
+
 module.exports = { router, checkAuth, checkNotAuth, checkAdmin };

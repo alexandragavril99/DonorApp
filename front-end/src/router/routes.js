@@ -46,6 +46,11 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/DoctorAppointment.vue") }
     ]
+  },
+  {
+    path: "/ranking",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Ranking.vue") }]
   }
 ];
 

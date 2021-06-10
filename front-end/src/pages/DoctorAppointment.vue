@@ -77,7 +77,7 @@
             </q-table>
           </q-tab-panel>
 
-          <q-tab-panel name="assumedAppointments">
+          <q-tab-panel class="displayPanel" name="assumedAppointments">
             <q-table
               grid
               :data="newData"
@@ -661,7 +661,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    },
+    }
   },
   created() {
     axios
@@ -690,3 +690,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.q-table__grid-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

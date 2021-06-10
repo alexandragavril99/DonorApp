@@ -407,6 +407,39 @@ const controller = {
       res.status(500).send(err);
     }
   },
+
+  getUserScore: async (req, res) => {
+    try {
+      const users = await UserDB.findAll({
+        order: [["scores", "DESC"]],
+        attributes: ["id", "name", "surname", "scores"],
+      });
+      res.status(200).send(users);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getPersonalScore: async (req, res) => {
+    try {
+      const user = await req.user;
+      const users = await UserDB.findAll({
+        order: [["scores", "DESC"]],
+        attributes: ["id", "name", "surname", "scores"],
+      });
+      const position = users.findIndex((x) => x.id === user.id);
+
+      res.status(200).send({
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        scores: user.scores,
+        position: position + 1,
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
 };
 
 module.exports = controller;

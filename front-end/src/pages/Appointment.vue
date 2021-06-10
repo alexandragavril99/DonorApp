@@ -153,7 +153,7 @@ export default {
       hoursArray: ["7:30", "8:30", "9:30", "10:30", "11:30", "12:30", "13:30"],
       left: null,
       config: {
-        num: [2, 3],
+        num: [3, 4],
         // rps: 0.1,
         radius: [5, 35],
         life: [1.5, 3],

@@ -53,12 +53,13 @@
             </div>
           </template>
         </q-field>
+
         <q-field
           outlined
           bottom-slots
           :value="doctor"
           class="bg-white"
-          style="padding-bottom:0px; margin-bottom: 3%;"
+          style="padding-bottom:0px; margin-bottom: 6%;"
         >
           <template v-slot:prepend>
             <q-icon name="medical_services" color="primary" />
@@ -74,6 +75,68 @@
             </div>
           </template>
         </q-field>
+
+        <q-field
+          v-if="!currentDate"
+          outlined
+          bottom-slots
+          :value="wasPresent"
+          class="bg-white"
+          style="padding-bottom:0px;"
+        >
+          <template v-slot:prepend>
+            <q-icon name="perm_identity" color="primary" />
+            <div class="text-subtitle2 text-primary">Prezent:</div>
+          </template>
+
+          <template v-slot:control>
+            <div
+              v-if="wasPresent == 1"
+              class="self-center full-width no-outline text-right text-primary text-weight-medium"
+              tabindex="0"
+            >
+              Da
+            </div>
+            <div
+              v-else
+              class="self-center full-width no-outline text-right text-primary text-weight-medium"
+              tabindex="0"
+            >
+              Nu
+            </div>
+          </template>
+        </q-field>
+
+        <!-- <q-field
+          v-if="!currentDate"
+          outlined
+          bottom-slots
+          :value="isCompleted"
+          class="bg-white"
+          style="padding-bottom:0px;"
+        >
+          <template v-slot:prepend>
+            <q-icon name="check" color="primary" />
+            <div class="text-subtitle2 text-primary">Donat cu succes:</div>
+          </template>
+
+          <template v-slot:control>
+            <div
+              v-if="isCompleted == 1"
+              class="self-center full-width no-outline text-right text-primary text-weight-medium"
+              tabindex="0"
+            >
+              Da
+            </div>
+            <div
+              v-else
+              class="self-center full-width no-outline text-right text-primary text-weight-medium"
+              tabindex="0"
+            >
+              Nu
+            </div>
+          </template>
+        </q-field> -->
       </q-card-section>
 
       <q-card-actions class="bg-secondary" vertical align="center">
@@ -83,6 +146,13 @@
           style="margin-bottom: 6%;"
           @click="confirm = true"
           >Anulare programare</q-btn
+        >
+        <a
+          v-if="analysisBulletin"
+          :href="'/uploads/' + analysisBulletin"
+          class="button"
+          download
+          >Descarcă buletin analize</a
         >
       </q-card-actions>
     </q-card>
@@ -116,7 +186,17 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["id", "date", "hour", "doctor", "currentDate", "state"],
+  props: [
+    "id",
+    "date",
+    "hour",
+    "doctor",
+    "currentDate",
+    "wasPresent",
+    "isCompleted",
+    "analysisBulletin",
+    "state"
+  ],
   data() {
     return {
       confirm: false
@@ -161,5 +241,39 @@ export default {
 
 .q-field--outlined .q-field__control {
   background: white;
+}
+
+.button {
+  text-decoration: none;
+  display: block;
+  width: 175px;
+  background: #b22222;
+  padding: 6px;
+  text-align: center;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  line-height: 25px;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    0 3px 1px -2px rgb(0 0 0 / 12%);
+}
+
+@media only screen and (max-width: 600px) {
+  .q-pa-xl .row {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .q-table__container
+    .q-table--horizontal-separator
+    .column
+    .no-wrap
+    .q-table__card
+    .q-table--no-wrap
+    .q-pa-md {
+    margin-top: 20vh;
+  }
 }
 </style>

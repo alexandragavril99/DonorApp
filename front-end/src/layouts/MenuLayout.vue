@@ -96,6 +96,7 @@
             label="Scor"
             icon="star_rate"
             class="tabsList"
+            @click="$router.push('/ranking').catch(err => {})"
           ></q-tab>
           <q-tab
             name="logout"
