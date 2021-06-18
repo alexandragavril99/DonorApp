@@ -122,9 +122,7 @@ export default {
         this.loaded = true;
 
         const now = new Date();
-        // const end = new Date(2021, 2, 29, 10, 10, 10, 10);
         const distance = this.end.getTime() - now.getTime();
-        // console.log(distance);
         if (distance < 0) {
           clearInterval(timer);
           this.changeState();

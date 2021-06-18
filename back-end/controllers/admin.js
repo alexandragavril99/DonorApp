@@ -280,6 +280,25 @@ const controller = {
       console.log(err);
     }
   },
+
+  getAppointmentsWithBloodType: async (req, res) => {
+    try {
+      const appointments = await AppointmentDB.findAll({
+        where: {
+          isCompleted: 1,
+        },
+        include: [
+          {
+            model: UserDB,
+            attributes: ["bloodType"],
+          },
+        ],
+      });
+      res.status(200).send(appointments);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
 };
 
 module.exports = controller;

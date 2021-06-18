@@ -64,4 +64,6 @@ router.post(
   adminController.updateAnalysisBulletin
 );
 
+router.get("/getAppointmentsWithBloodType", checkNotAuth, adminController.getAppointmentsWithBloodType);
+
 module.exports = router;

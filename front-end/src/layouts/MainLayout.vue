@@ -32,28 +32,28 @@
             <q-item-label>Acasa</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item color="dark" clickable exact to="/">
+        <q-item color="dark" clickable exact to="/doctorAppointment">
           <q-item-section avatar>
             <q-icon name="person" />
           </q-item-section>
           <q-item-section>
-            <q-item-label color="dark">Profil</q-item-label>
+            <q-item-label color="dark">Programare donatori</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable exact to="/">
+        <q-item clickable exact to="/profile">
           <q-item-section avatar>
             <q-icon name="event" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Programeaza-te</q-item-label>
+            <q-item-label>Profil</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable exact to="/">
+        <q-item clickable exact to="/statistics">
           <q-item-section avatar>
             <q-icon name="star_rate" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Scor</q-item-label>
+            <q-item-label>Statistici</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable @click="logout">

@@ -10,14 +10,14 @@
     <h6
       v-if="state == 0"
       class="q-pa-md flex flex-center"
-      style="margin:0; padding-bottom:0;"
+      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif;"
     >
       Timp rămas până la următoarea programare:
     </h6>
     <h6
       v-else
       class="q-pa-md flex flex-center"
-      style="margin:0; padding-bottom:0;"
+      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif;"
     >
       Timpul a expirat!
     </h6>
@@ -33,10 +33,10 @@
       :state="state"
       v-on:changeState="updateState($event)"
     />
-    <h6 v-if="state == 0" class="q-pa-md flex flex-center" style="margin:0;">
+    <h6 v-if="state == 0" class="q-pa-md flex flex-center" style="margin:0;font-family: 'Montserrat', sans-serif;">
       Momentan formularul nu este disponibil. Vă așteptăm după timpul precizat.
     </h6>
-    <h6 v-else class="q-pa-md flex flex-center" style="margin:0;">
+    <h6 v-else class="q-pa-md flex flex-center" style="margin:0; font-family: 'Montserrat', sans-serif;">
       Realizează o programare completând formularul de mai jos.
     </h6>
     <div class="form-card rounded-borders">

@@ -69,14 +69,6 @@
             clickable
             @click="$router.push('/doctorAppointment').catch(err => {})"
           ></q-tab>
-          <!-- <q-tab
-            name="appointment"
-            label="Programează-te"
-            icon="event"
-            class="tabsList"
-            clickable
-            @click="$router.push('/appointment').catch(err => {})"
-          /> -->
           <q-tab
             name="profile"
             label="Profil"
@@ -90,8 +82,19 @@
             label="Ajutor"
             icon="healing"
             class="tabsList"
+            @click="$router.push('/emergencies').catch(err => {})"
           ></q-tab>
           <q-tab
+            v-if="admin"
+            name="statistics"
+            label="Statistici"
+            icon="analytics"
+            class="tabsList"
+            clickable
+            @click="$router.push('/statistics').catch(err => {})"
+          />
+          <q-tab
+            v-else
             name="score"
             label="Scor"
             icon="star_rate"
@@ -142,6 +145,14 @@
               <q-item-label>Acasa</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item clickable exact to="/doctorAppointment">
+            <q-item-section avatar>
+              <q-icon name="event" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Programări donatori</q-item-label>
+            </q-item-section>
+          </q-item>
           <q-item clickable exact to="/profile">
             <q-item-section avatar>
               <q-icon name="person" />
@@ -150,20 +161,20 @@
               <q-item-label>Profil</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable exact to="/appointment">
-            <q-item-section avatar>
-              <q-icon name="event" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Programeaza-te</q-item-label>
-            </q-item-section>
-          </q-item>
           <q-item clickable exact to="/">
             <q-item-section avatar>
-              <q-icon name="star_rate" />
+              <q-icon name="healing" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Scor</q-item-label>
+              <q-item-label>Ajutor</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable exact to="/doctorAppointment">
+            <q-item-section avatar>
+              <q-icon name="analytics" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Statistici</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable @click="logout">

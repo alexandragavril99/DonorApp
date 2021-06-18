@@ -51,6 +51,16 @@ const routes = [
     path: "/ranking",
     component: () => import("layouts/MenuLayout.vue"),
     children: [{ path: "", component: () => import("pages/Ranking.vue") }]
+  },
+  {
+    path: "/statistics",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Statistics.vue") }]
+  },
+  {
+    path: "/emergencies",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Emergencies.vue") }]
   }
 ];
 
