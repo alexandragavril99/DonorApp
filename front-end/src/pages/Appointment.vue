@@ -33,10 +33,18 @@
       :state="state"
       v-on:changeState="updateState($event)"
     />
-    <h6 v-if="state == 0" class="q-pa-md flex flex-center" style="margin:0;font-family: 'Montserrat', sans-serif;">
+    <h6
+      v-if="state == 0"
+      class="q-pa-md flex flex-center"
+      style="margin:0;font-family: 'Montserrat', sans-serif;"
+    >
       Momentan formularul nu este disponibil. Vă așteptăm după timpul precizat.
     </h6>
-    <h6 v-else class="q-pa-md flex flex-center" style="margin:0; font-family: 'Montserrat', sans-serif;">
+    <h6
+      v-else
+      class="q-pa-md flex flex-center"
+      style="margin:0; font-family: 'Montserrat', sans-serif;"
+    >
       Realizează o programare completând formularul de mai jos.
     </h6>
     <div class="form-card rounded-borders">
@@ -49,7 +57,10 @@
             :locale="currentLocale"
             :disable="state == 0"
           />
-          <q-item-section class="q-pa-md flex-center">
+          <q-item-section
+            class="q-pa-md flex-center"
+            style="font-family: 'Montserrat', sans-serif;"
+          >
             <q-item-label
               >Data selectată: <strong> {{ date }} </strong></q-item-label
             >
@@ -85,7 +96,10 @@
               </q-item>
             </q-list>
           </q-scroll-area>
-          <q-item-section class="q-pa-md flex-center">
+          <q-item-section
+            class="q-pa-md flex-center"
+            style="font-family: 'Montserrat', sans-serif;"
+          >
             <q-item-label
               >Ora selectată: <strong> {{ currentHour }} </strong></q-item-label
             >
@@ -99,6 +113,7 @@
           color="primary"
           @click="confirm = true"
           :disable="state == 0"
+          style="font-family: 'Montserrat', sans-serif;"
         />
       </div>
     </div>

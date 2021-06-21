@@ -3,6 +3,7 @@ const AppointmentDB = require("../models").Appointment;
 const Sequelize = require("sequelize");
 const EmployeeDB = require("../models").Employee;
 const DonationsHistoryDB = require("../models").DonationsHistory;
+const EmergencyDB = require("../models").Emergency;
 const Op = Sequelize.Op;
 
 const controller = {
@@ -295,6 +296,35 @@ const controller = {
         ],
       });
       res.status(200).send(appointments);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  addEmergencyCase: async (req, res) => {
+    try {
+      const user = await req.user;
+      console.log(user);
+      const emergencyCase = {
+        name: req.body.name,
+        text: req.body.text,
+        phone: req.body.phone,
+        bloodType: req.body.bloodType,
+        isAvailable: true,
+        doctorId: user.id,
+      };
+      await EmergencyDB.create(emergencyCase);
+      res.status(200).send({ message: "Emergency case created!" });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getEmergencyCases: async (req, res) => {
+    try {
+      EmergencyDB.findAll()
+        .then((response) => res.status(200).send(response))
+        .catch((err) => res.status(500).send(err));
     } catch (err) {
       res.status(500).send(err);
     }

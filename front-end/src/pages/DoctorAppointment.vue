@@ -1,5 +1,12 @@
 <template>
   <div class="q-pa-md">
+    <particles-bg
+      num="10"
+      type="custom"
+      color="#FFFFFF"
+      :bg="true"
+      :config="config"
+    />
     <div class="q-gutter-y-md" style="max-width: 70%; margin: 0 auto;">
       <q-card>
         <q-tabs
@@ -386,9 +393,27 @@
 
 <script>
 import axios from "axios";
+import { ParticlesBg } from "particles-bg-vue";
 export default {
+  components: {
+    ParticlesBg
+  },
   data() {
     return {
+      config: {
+        num: [2, 3],
+        // rps: 0.1,
+        radius: [5, 35],
+        life: [1.5, 3],
+        v: [0, 0],
+        // tha: [-30, 30],
+        alpha: [0.6, 0],
+        scale: [0.1, 0.4],
+        color: "#b22222",
+        position: "all",
+        cross: "dead",
+        random: 15
+      },
       shape: "",
       present: "",
       completed: "",

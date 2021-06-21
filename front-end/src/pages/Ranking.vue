@@ -7,11 +7,11 @@
       :bg="true"
       :config="config"
     />
-    <h4 class="flex flex-center">Clasament utilizatori</h4>
+    <h4 class="flex flex-center" style="font-family: 'Montserrat', sans-serif;">Clasament utilizatori</h4>
     <div class="flex flex-center form-card rounded-borders">
       <div
         class="q-pa-md q-mr-lg"
-        style="display:flex; justify-content:center;"
+        style="display:flex; justify-content:center; font-family: 'Montserrat', sans-serif;"
       >
         <q-card v-if="user" class="my-card" flat bordered>
           <q-card-section horizontal style="margin-top:3%;">
@@ -36,7 +36,7 @@
               </q-avatar>
             </q-card-section>
           </q-card-section>
-          <q-card-section>
+          <q-card-section style="font-family: 'Montserrat', sans-serif;">
             <div
               v-if="user.position <= 10 && user.score != null"
               class="text-body-2"
@@ -62,7 +62,10 @@
 
           <q-separator />
 
-          <q-card-actions class="flex flex-center" style="margin-top:3%;">
+          <q-card-actions
+            class="flex flex-center"
+            style="font-family: 'Montserrat', sans-serif;"
+          >
             <q-btn
               color="primary"
               @click="$router.push('/appointment').catch(err => {})"
@@ -80,7 +83,7 @@
           class="shadow-2 rounded-borders"
           style="height: 400px; width: 400px; background:white;"
         >
-          <q-list bordered v-for="(user, index) in userList" :key="index">
+          <q-list bordered v-for="(user, index) in userList" :key="index" style="font-family: 'Montserrat', sans-serif;">
             <q-item clickable v-ripple>
               <q-item-section
                 class="text-weight-medium"

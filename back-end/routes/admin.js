@@ -64,6 +64,22 @@ router.post(
   adminController.updateAnalysisBulletin
 );
 
-router.get("/getAppointmentsWithBloodType", checkNotAuth, adminController.getAppointmentsWithBloodType);
+router.get(
+  "/getAppointmentsWithBloodType",
+  checkNotAuth,
+  adminController.getAppointmentsWithBloodType
+);
+
+router.post(
+  "/createEmergencyCase",
+  checkNotAuth,
+  adminController.addEmergencyCase
+);
+
+router.get(
+  "/getEmergencyCases",
+  checkNotAuth,
+  adminController.getEmergencyCases
+);
 
 module.exports = router;

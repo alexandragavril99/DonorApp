@@ -8,7 +8,14 @@
       :config="config"
     />
     <div class="flex flex-center">
-      <div class="flex" style="flex-wrap: nowrap; margin-top: 5%;">
+      <div>
+        <h4
+          style="margin:0; margin-top: 15%; font-family: 'Montserrat-bold', sans-serif; color:rgba(40,49,80,1); "
+        >
+          STATISTICI CENTRU
+        </h4>
+      </div>
+      <div class="flex" style="flex-wrap: nowrap; margin-top: 2%;">
         <div class="q-pa-md">
           <canvas
             id="myChart1"
@@ -152,17 +159,17 @@ export default {
                 label: "Tip sânge donat pe ultimele 6 luni",
                 data: [no, noA2, noB3, noAB4],
                 backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                  "rgba(75, 192, 192, 0.2)"
+                  "rgba(180,54,54,1)",
+                  "rgba(240,84,64,1)",
+                  "rgba(212,68,60,1)",
+                  "rgba(40,49,80,1)"
                 ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)"
-                ],
+                // borderColor: [
+                //   "rgba(255, 99, 132, 1)",
+                //   "rgba(54, 162, 235, 1)",
+                //   "rgba(255, 206, 86, 1)",
+                //   "rgba(75, 192, 192, 1)"
+                // ],
                 borderWidth: 1
               }
             ]
@@ -172,11 +179,22 @@ export default {
               y: {
                 beginAtZero: true
               }
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  // This more specific font property overrides the global property
+                  font: {
+                    family: "Montserrat",
+                    size: 14
+                  }
+                }
+              }
             }
           }
         });
         var ctx = document.getElementById("myChart2");
-        var myChart3 = new Chart(ctx, {
+        var myChart2 = new Chart(ctx, {
           type: "line",
           data: {
             labels: [
@@ -193,10 +211,28 @@ export default {
                 label: "Frecvență donare pe 2021",
                 data: dataMonths,
                 fill: false,
-                borderColor: ["rgba(178, 34, 34,1)"],
+                borderColor: ["rgba(240,84,64,0.9)"],
                 tension: 0.1
               }
             ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  // This more specific font property overrides the global property
+                  font: {
+                    family: "Montserrat",
+                    size: 14
+                  }
+                }
+              }
+            }
           }
         });
         var ctx = document.getElementById("myChart3");
@@ -208,14 +244,28 @@ export default {
               {
                 label: "Frecvență donare pe 2021",
                 data: dataYear,
-                backgroundColor: [
-                  "rgb(255, 99, 132)",
-                  "rgb(54, 162, 235)",
-                  "rgb(255, 205, 86)"
-                ],
+                backgroundColor: ["#B43636", "#283150", "#F05440"],
                 hoverOffset: 4
               }
             ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  // This more specific font property overrides the global property
+                  font: {
+                    family: "Montserrat",
+                    size: 14
+                  }
+                }
+              }
+            }
           }
         });
       });

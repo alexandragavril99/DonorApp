@@ -21,6 +21,7 @@
           :isCompleted="appointment.isCompleted"
           :currentDate="currentDate"
           v-on:changeState="updateState($event)"
+          style="font-family: 'Montserrat', sans-serif;"
         />
       </div>
     </div>
@@ -34,6 +35,7 @@
         :columns="columns"
         no-data-label="Nu aveți nicio programare trecută inregistrată."
         row-key="name"
+        style="font-family: 'Montserrat', sans-serif;"
       />
     </div>
   </div>
@@ -60,17 +62,15 @@ export default {
           name: "date",
           required: true,
           label: "Data",
-          align: "left",
+          align: "center",
           field: row => row.date,
           format: val => `${val}`,
-          sortable: true
         },
         {
           name: "hour",
           align: "center",
           label: "Ora",
           field: "schedulingTime",
-          sortable: true
         },
         {
           name: "doctorName",
@@ -78,7 +78,6 @@ export default {
           field: row =>
             row.employee.user.name + " " + row.employee.user.surname,
           align: "center",
-          sortable: true
         },
         {
           name: "wasPresent",

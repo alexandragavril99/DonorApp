@@ -14,7 +14,7 @@
           </div>
           <div style="display:table-cell;">:</div>
         </div>
-        <div class="text-subtitle2 bg-secondary bordertime">
+        <div class="text-subtitle2 bg-secondary bordertime" style="font-family: 'Montserrat', sans-serif;">
           zile
         </div>
       </div>
@@ -29,7 +29,7 @@
           </div>
           <div style="display:table-cell;">:</div>
         </div>
-        <div class="text-subtitle2 bg-secondary bordertime">
+        <div class="text-subtitle2 bg-secondary bordertime" style="font-family: 'Montserrat', sans-serif;">
           ore
         </div>
       </div>
@@ -44,7 +44,7 @@
           </div>
           <div style="display:table-cell; ">:</div>
         </div>
-        <div class="text-subtitle2 bg-secondary bordertime">
+        <div class="text-subtitle2 bg-secondary bordertime" style="font-family: 'Montserrat', sans-serif;">
           minute
         </div>
       </div>
@@ -58,7 +58,7 @@
             {{ time.displaySeconds }}
           </div>
         </div>
-        <div class="text-subtitle2 bg-secondary bordertime">
+        <div class="text-subtitle2 bg-secondary bordertime" style="font-family: 'Montserrat', sans-serif;">
           secunde
         </div>
       </div>
