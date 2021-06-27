@@ -7,7 +7,12 @@
       :bg="true"
       :config="config"
     />
-    <h4 class="flex flex-center" style="font-family: 'Montserrat', sans-serif;">Clasament utilizatori</h4>
+    <h5
+      class="flex flex-center  text-weight-bold"
+      style="font-family: 'Montserrat', sans-serif;"
+    >
+      Clasament utilizatori
+    </h5>
     <div class="flex flex-center form-card rounded-borders">
       <div
         class="q-pa-md q-mr-lg"
@@ -83,7 +88,12 @@
           class="shadow-2 rounded-borders"
           style="height: 400px; width: 400px; background:white;"
         >
-          <q-list bordered v-for="(user, index) in userList" :key="index" style="font-family: 'Montserrat', sans-serif;">
+          <q-list
+            bordered
+            v-for="(user, index) in userList"
+            :key="index"
+            style="font-family: 'Montserrat', sans-serif;"
+          >
             <q-item clickable v-ripple>
               <q-item-section
                 class="text-weight-medium"

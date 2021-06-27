@@ -16,7 +16,7 @@
         <q-input
           filled
           v-model="name"
-          label="Your name *"
+          label="Prenume *"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please type something',
@@ -33,7 +33,7 @@
         <q-input
           filled
           v-model="surname"
-          label="Your surname *"
+          label="Nume de familie *"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please type something',
@@ -50,7 +50,7 @@
         <q-input
           filled
           v-model="email"
-          label="Your email *"
+          label="Email *"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please type something',
@@ -69,7 +69,7 @@
           filled
           type="password"
           v-model="password"
-          label="Your password *"
+          label="Parolă *"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Please type your password',
@@ -84,7 +84,7 @@
         <q-input
           filled
           v-model="phone"
-          label="Your phone *"
+          label="Telefon *"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Please type your phone'
@@ -98,7 +98,7 @@
         <q-input
           filled
           v-model="city"
-          label="Your city *"
+          label="Oraș *"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Please type your city'
@@ -114,7 +114,7 @@
           v-model="birthDate"
           mask="date"
           :rules="['birthDate']"
-          label="Birth date"
+          label="Data nașterii"
         >
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
@@ -137,7 +137,7 @@
           filled
           v-model="weight"
           type="number"
-          label="Your weight *"
+          label="Greutate *"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Please type your weight',
@@ -153,7 +153,7 @@
           filled
           v-model="bloodType"
           :options="options"
-          label="Blood type"
+          label="Grupă sanguină"
           style="width:300px;"
           :rules="[
             val =>
@@ -171,7 +171,7 @@
           mask="date"
           lazy-rules
           :rules="['lastDonation']"
-          label="Last donation"
+          label="Data ultimei donări"
         >
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">

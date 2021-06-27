@@ -310,6 +310,8 @@ const controller = {
         text: req.body.text,
         phone: req.body.phone,
         bloodType: req.body.bloodType,
+        quantity: req.body.quantity,
+        donorsFound: 0,
         isAvailable: true,
         doctorId: user.id,
       };
@@ -325,6 +327,59 @@ const controller = {
       EmergencyDB.findAll()
         .then((response) => res.status(200).send(response))
         .catch((err) => res.status(500).send(err));
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  updateEmergencyCase: async (req, res) => {
+    try {
+      const emergency = await EmergencyDB.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (emergency) {
+        emergency
+          .update({
+            isAvailable: req.body.isAvailable,
+          })
+          .then(() => res.status(200).send({ message: "Case updated." }))
+          .catch((err) => res.status(500).send(err));
+      } else {
+        res.status(400).send({ message: "The id does not exist." });
+      }
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getPercentageOfCases: async (req, res) => {
+    try {
+      const cases = await EmergencyDB.findAll({
+        where: {
+          isAvailable: 0,
+        },
+      });
+      let nr1 = 0;
+      let nr2 = 0;
+      let max = cases.length;
+      cases.forEach((element) => {
+        const diffInMilliSeconds = Math.abs(
+          new Date(element.updatedAt) - new Date(element.createdAt)
+        );
+        const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+
+        if (hours < 12) {
+          nr1++;
+        } else nr2++;
+      });
+
+      let resolvedCases = nr1 / max;
+      let unresolvedCases = nr2 / max;
+      let nr = [resolvedCases, unresolvedCases];
+      res.status(200).send(nr);
     } catch (err) {
       res.status(500).send(err);
     }

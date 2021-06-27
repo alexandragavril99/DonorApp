@@ -82,4 +82,16 @@ router.get(
   adminController.getEmergencyCases
 );
 
+router.put(
+  "/updateEmergencyCase/:id",
+  checkNotAuth,
+  adminController.updateEmergencyCase
+);
+
+router.get(
+  "/getPercentageOfCases",
+  checkNotAuth,
+  adminController.getPercentageOfCases
+);
+
 module.exports = router;

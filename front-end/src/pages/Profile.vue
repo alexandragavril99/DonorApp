@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md flex flex-center">
+  <div
+    class="q-pa-md flex flex-center"
+    style="font-family: 'Montserrat-regular', sans-serif;"
+  >
     <particles-bg
       num="10"
       type="custom"
@@ -10,12 +13,18 @@
     <q-dialog v-model="prompt" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6" style="text-align: center">
+          <div
+            class="text-h6"
+            style="text-align: center; font-family: 'Montserrat-regular', sans-serif;"
+          >
             Editează datele de contact
           </div>
         </q-card-section>
 
-        <q-card-section class="q-pt-none">
+        <q-card-section
+          class="q-pt-none"
+          style="font-family: 'Montserrat-regular', sans-serif;"
+        >
           <q-input
             dense
             v-model="user.name"
@@ -84,7 +93,11 @@
           </q-input>
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary">
+        <q-card-actions
+          align="right"
+          class="text-primary"
+          style="font-family: 'Montserrat-regular', sans-serif;"
+        >
           <q-btn flat label="Cancel" v-close-popup @click="cancel" />
           <q-btn
             flat
@@ -98,10 +111,18 @@
     <q-dialog v-model="passwordDialog" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6" style="text-align: center">Modifică parola</div>
+          <div
+            class="text-h6"
+            style="text-align: center; font-family: 'Montserrat-regular', sans-serif;"
+          >
+            Modifică parola
+          </div>
         </q-card-section>
 
-        <q-card-section class="q-pt-none">
+        <q-card-section
+          class="q-pt-none"
+          style="font-family: 'Montserrat-regular', sans-serif;"
+        >
           <q-input
             dense
             v-model="userPassword.oldPassword"
@@ -237,7 +258,7 @@
           {{ user.bloodType }}
         </q-chip>
       </q-card-section>
-      <q-card-section class="text-h6 text-primary q-card-name">
+      <q-card-section class="text-h6 text-primary q-card-name text-weight-bold">
         Ultima dată a donării: {{ user.lastDonation }}
       </q-card-section>
       <q-card-section class="text-h6 text-primary q-card-name">

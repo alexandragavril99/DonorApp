@@ -61,6 +61,11 @@ const routes = [
     path: "/emergencies",
     component: () => import("layouts/MenuLayout.vue"),
     children: [{ path: "", component: () => import("pages/Emergencies.vue") }]
+  },
+  {
+    path:"/donorEmergencies",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [{ path: "", component: () => import("pages/DonorEmergencies.vue") }]
   }
 ];
 

@@ -2,6 +2,7 @@ const UserDB = require("../models").User;
 const AppointmentDB = require("../models").Appointment;
 const DonationsHistoryDB = require("../models").DonationsHistory;
 const EmployeeDB = require("../models").Employee;
+const EmergencyDB = require("../models").Emergency;
 const bcrypt = require("bcrypt");
 const Sequelize = require("sequelize");
 
@@ -436,6 +437,37 @@ const controller = {
         scores: user.scores,
         position: position + 1,
       });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  getActiveEmergencyCases: async (req, res) => {
+    try {
+      const cases = await EmergencyDB.findAll({
+        where: {
+          isAvailable: 1,
+        },
+      });
+      res.status(200).send(cases);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  addDonor: async (req, res) => {
+    try {
+      const emergencyCase = await EmergencyDB.findByPk(req.params.id);
+      if (emergencyCase) {
+        console.log("AICI");
+        emergencyCase
+          .update({
+            donorsFound: emergencyCase.donorsFound + 1,
+          })
+          .then(() => res.status(200).send({ message: "Donor added." }));
+      } else {
+        res.status(400).send({ message: "The id does not exist." });
+      }
     } catch (err) {
       res.status(500).send(err);
     }

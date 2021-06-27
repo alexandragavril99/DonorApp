@@ -7,7 +7,133 @@
       :bg="true"
       :config="config"
     />
-    <div class="row" style="margin-top: 2%;">
+    <q-dialog v-model="confirm2" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar
+            icon="notification_important"
+            color="primary"
+            text-color="white"
+          />
+          <span class="q-ml-sm">Dorești închiderea cazului?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Da" color="primary" @click="editItem" />
+          <q-btn flat label="Nu" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="confirm" persistent>
+      <q-card style="max-width:80%;">
+        <q-card-section class="row items-center">
+          <q-table
+            title="Cazuri active"
+            :data="rows"
+            :columns="columns"
+            no-data-label="Nu există niciun caz soluționat."
+            row-key="name"
+            :rows-per-page-options="[4, 8, 16, 0]"
+          >
+            <template v-slot:header="props">
+              <q-tr :props="props">
+                <q-th />
+
+                <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.label }}
+                </q-th>
+                <q-th>Închide caz</q-th>
+              </q-tr>
+            </template>
+
+            <template v-slot:body="props">
+              <q-tr :props="props" :key="`${props.row.id}`">
+                <q-td> {{ props.row.id }} </q-td>
+
+                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.value }}
+                </q-td>
+                <q-td align="center">
+                  <q-btn
+                    dense
+                    flat
+                    round
+                    color="primary"
+                    icon="edit"
+                    @click="changeState(props.row)"
+                  ></q-btn>
+                </q-td>
+              </q-tr>
+              <q-tr
+                :props="props"
+                :key="`${'A'+props.row.id}`"
+                class="q-virtual-scroll--with-prev"
+              >
+                <q-td colspan="100%">
+                  <div class="text-left">
+                    <strong>Descriere caz:</strong>
+                    {{ props.row.text }}
+                  </div>
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="confirm1" persistent>
+      <q-card style="max-width:80%;">
+        <q-card-section class="row items-center">
+          <q-table
+            title="Cazuri încheiate"
+            :data="rows1"
+            :columns="columns"
+            no-data-label="Nu există niciun caz soluționat."
+            row-key="name"
+            :rows-per-page-options="[4, 8, 16, 0]"
+            ><template v-slot:header="props">
+              <q-tr :props="props">
+                <q-th />
+
+                <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.label }}
+                </q-th>
+              </q-tr>
+            </template>
+
+            <template v-slot:body="props">
+              <q-tr :props="props" :key="`${props.row.id}`">
+                <q-td> {{ props.row.id }} </q-td>
+
+                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.value }}
+                </q-td>
+              </q-tr>
+              <q-tr
+                :props="props"
+                :key="`${'B' + props.row.id}`"
+                class="q-virtual-scroll--with-prev"
+              >
+                <q-td colspan="100%">
+                  <div class="text-left">
+                    <strong>Descriere caz:</strong>
+                    {{ props.row.text }}
+                  </div>
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <div class="row" style="margin-top: 0.5%;">
       <div class="col-6 q-pa-md" style="display:flex; justify-content:center;">
         <q-card class="my-card">
           <q-card-section class="bg-secondary">
@@ -40,6 +166,13 @@
               style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
             />
             <q-input
+              outlined
+              v-model="quantity"
+              label="Cantitate necesară"
+              class="bg-white"
+              style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
+            />
+            <q-input
               v-model="text"
               outlined
               label="Descriere caz..."
@@ -55,7 +188,7 @@
               color="primary"
               style="margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
               @click="createEmergencyCase"
-              >Trimitere caz de urgență</q-btn
+              >Creare caz de urgență</q-btn
             >
           </q-card-actions>
         </q-card>
@@ -68,10 +201,14 @@
           style="display: flex; justify-content:center; margin-top: 5%; margin-bottom: 5%;"
         >
           <div style="margin-right: 2%; font-family: 'Montserrat';">
-            <q-btn unlevated color="primary">Vizualizează cazuri active</q-btn>
+            <q-btn unlevated color="primary" @click="confirm = true"
+              >Vizualizează cazuri active</q-btn
+            >
           </div>
           <div style="margin-left: 2%; font-family: 'Montserrat';">
-            <q-btn unlevated color="primary">Vizualizează cazuri trecute</q-btn>
+            <q-btn unlevated color="primary" @click="confirm1 = true"
+              >Vizualizează cazuri încheiate</q-btn
+            >
           </div>
         </div>
         <div style="font-family: 'Montserrat', sans-serif; padding: 1%;">
@@ -102,11 +239,23 @@ export default {
   },
   data() {
     return {
+      confirm: false,
+      confirm1: false,
+      confirm2: false,
+      data: [],
       options: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
       name: null,
       phone: null,
       bloodType: null,
+      quantity: null,
       text: null,
+      rows: [],
+      rows1: [],
+      currentRow: null,
+      nr1: 0,
+      nr2: 0,
+      max: 0,
+      myChart3: null,
       config: {
         num: [2, 3],
         // rps: 0.1,
@@ -120,7 +269,41 @@ export default {
         position: "all",
         cross: "dead",
         random: 15
-      }
+      },
+      columns: [
+        {
+          name: "name",
+          required: true,
+          label: "Nume pacient",
+          align: "left",
+          field: row => row.name,
+          format: val => `${val}`
+        },
+        {
+          name: "phone",
+          align: "center",
+          label: "Telefon",
+          field: "phone"
+        },
+        {
+          name: "bloodType",
+          label: "Grupă sanguină",
+          align: "center",
+          field: "bloodType"
+        },
+        {
+          name: "quantity",
+          label: "Cantitate necesara",
+          align: "center",
+          field: "quantity"
+        },
+        {
+          name: "donorsFound",
+          label: "Număr donatori găsiți",
+          align: "center",
+          field: "donorsFound"
+        }
+      ]
     };
   },
   methods: {
@@ -132,7 +315,8 @@ export default {
             name: this.name,
             phone: this.phone,
             bloodType: this.bloodType,
-            text: this.text
+            text: this.text,
+            quantity: this.quantity
           },
           { withCredentials: true }
         )
@@ -143,7 +327,16 @@ export default {
             icon: "done",
             message: "Caz adăugat!"
           });
-          this.name = this.phone = this.bloodType = this.text = null;
+          this.rows.push({
+            id: this.data[this.data.length - 1].id + 1,
+            name: this.name,
+            phone: this.phone,
+            bloodType: this.bloodType,
+            text: this.text,
+            quantity: this.quantity
+          });
+
+          this.name = this.phone = this.bloodType = this.text = this.quantity = null;
         })
         .catch(err => {
           const errors = Object.values(err.response.data); //iau erorile din back
@@ -156,37 +349,100 @@ export default {
             });
           });
         });
+    },
+    changeState(row) {
+      this.currentRow = row;
+      this.confirm2 = true;
+    },
+    editItem() {
+      this.currentRow.isAvailable = 0;
+      axios
+        .put(
+          `http://localhost:8081/api/admin/updateEmergencyCase/${this.currentRow.id}`,
+          { isAvailable: false },
+          { withCredentials: true }
+        )
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Caz încheiat!"
+          });
+
+          let index = this.rows.findIndex(x => x.id === this.currentRow.id);
+
+          this.rows.splice(index, 1);
+          console.log(this.rows);
+          this.rows1.push(this.currentRow);
+
+          const diffInMilliSeconds = Math.abs(
+            new Date(this.currentRow.updatedAt) -
+              new Date(this.currentRow.createdAt)
+          );
+          const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+
+          console.log(this.myChart3.data.datasets[0].data);
+
+          if (hours < 12) {
+            this.nr1++;
+          } else this.nr2++;
+          this.max++;
+          this.myChart3.data.datasets[0].data = [
+            this.nr1 / this.max,
+            this.nr2 / this.max
+          ];
+          console.log(this.myChart3.data.datasets[0].data);
+          this.myChart3.update();
+
+          this.currentRow = {};
+          this.confirm2 = false;
+        })
+        .catch(err => console.log(err));
     }
   },
   created() {
     axios
-      .get("http://localhost:8081/api/admin/getAppointmentsWithBloodType", {
+      .get("http://localhost:8081/api/admin/getEmergencyCases", {
         withCredentials: true
       })
       .then(response => {
-        let data = response.data;
+        this.data = response.data;
+        this.data.forEach(element => {
+          if (element.isAvailable) {
+            this.rows.push(element);
+          } else this.rows1.push(element);
+        });
 
-        let dataYear = [0, 0, 0];
-        data.forEach(element => {
-          let date = new Date(element.date);
-          if (date.getFullYear() == 2019) {
-            dataYear[0]++;
-          } else if (date.getFullYear() == 2020) {
-            dataYear[1]++;
-          } else if (date.getFullYear() == 2021) {
-            dataYear[2]++;
-          }
+        console.log(this.rows);
+        console.log(this.rows1);
+
+        this.max = this.rows1.length;
+        this.rows1.forEach(element => {
+          // const diffInMilliSeconds = Math.abs(
+          //   new Date(element.updatedAt) - new Date(element.createdAt)
+          // );
+          // const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+          let hours =
+            Math.abs(
+              new Date(element.updatedAt) - new Date(element.createdAt)
+            ) / 36e5;
+
+          console.log(hours);
+          if (hours < 12) {
+            this.nr1++;
+          } else this.nr2++;
         });
 
         var ctx = document.getElementById("myChart1");
-        var myChart3 = new Chart(ctx, {
+        this.myChart3 = new Chart(ctx, {
           type: "pie",
           data: {
-            labels: ["Soluționate", "Nesoluționate"],
+            labels: ["Sub 12 ore", "Peste 12 ore"],
             datasets: [
               {
                 label: "Frecvență donare pe 2021",
-                data: [20,50],
+                data: [this.nr1 / this.max, this.nr2 / this.max],
                 backgroundColor: ["#B43636", "#F05440", ""],
                 hoverOffset: 4
               }

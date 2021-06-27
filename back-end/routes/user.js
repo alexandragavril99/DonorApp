@@ -100,4 +100,12 @@ router.get("/getUserScore", checkNotAuth, userController.getUserScore);
 
 router.get("/getPersonalScore", checkNotAuth, userController.getPersonalScore);
 
+router.get(
+  "/getActiveCases",
+  checkNotAuth,
+  userController.getActiveEmergencyCases
+);
+
+router.put("/addDonor/:id", checkNotAuth, userController.addDonor);
+
 module.exports = { router, checkAuth, checkNotAuth, checkAdmin };

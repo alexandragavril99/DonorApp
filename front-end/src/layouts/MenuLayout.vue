@@ -78,11 +78,20 @@
             @click="$router.push('/profile').catch(err => {})"
           ></q-tab>
           <q-tab
+            v-if="admin"
             name="emergency"
             label="Ajutor"
             icon="healing"
             class="tabsList"
             @click="$router.push('/emergencies').catch(err => {})"
+          ></q-tab>
+          <q-tab
+            v-else
+            name="emergency"
+            label="Ajutor"
+            icon="healing"
+            class="tabsList"
+            @click="$router.push('/donorEmergencies').catch(err => {})"
           ></q-tab>
           <q-tab
             v-if="admin"

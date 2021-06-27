@@ -157,7 +157,8 @@ export default {
             datasets: [
               {
                 label: "Tip sânge donat pe ultimele 6 luni",
-                data: [no, noA2, noB3, noAB4],
+                // data: [no, noA2, noB3, noAB4],
+                data: [18, 26, 12, 34],
                 backgroundColor: [
                   "rgba(180,54,54,1)",
                   "rgba(240,84,64,1)",
@@ -209,7 +210,8 @@ export default {
             datasets: [
               {
                 label: "Frecvență donare pe 2021",
-                data: dataMonths,
+                //data: dataMonths,
+                data: [10, 30, 28, 40, 45, 50, 38],
                 fill: false,
                 borderColor: ["rgba(240,84,64,0.9)"],
                 tension: 0.1
@@ -243,7 +245,8 @@ export default {
             datasets: [
               {
                 label: "Frecvență donare pe 2021",
-                data: dataYear,
+               // data: dataYear,
+                data: [500, 700, 400],
                 backgroundColor: ["#B43636", "#283150", "#F05440"],
                 hoverOffset: 4
               }

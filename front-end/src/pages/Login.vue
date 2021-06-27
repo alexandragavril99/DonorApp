@@ -15,7 +15,7 @@
         <q-input
           filled
           v-model="email"
-          label="Your email *"
+          label="Email *"
           lazy-rules
           :rules="[
             val => (val && val.length > 0) || 'Please type something',
@@ -33,7 +33,7 @@
           filled
           type="password"
           v-model="password"
-          label="Your password *"
+          label="Parolă *"
           lazy-rules
           :rules="[
             val => (val !== null && val !== '') || 'Please type your password',
