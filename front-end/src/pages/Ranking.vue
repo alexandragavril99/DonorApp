@@ -8,14 +8,14 @@
       :config="config"
     />
     <h5
-      class="flex flex-center  text-weight-bold"
+      class="flex flex-center text-weight-bold textMobile"
       style="font-family: 'Montserrat', sans-serif;"
     >
       Clasament utilizatori
     </h5>
     <div class="flex flex-center form-card rounded-borders">
       <div
-        class="q-pa-md q-mr-lg"
+        class="q-pa-md q-mr-lg card"
         style="display:flex; justify-content:center; font-family: 'Montserrat', sans-serif;"
       >
         <q-card v-if="user" class="my-card" flat bordered>
@@ -35,7 +35,7 @@
               </div>
             </q-card-section>
 
-            <q-card-section class="col flex flex-center">
+            <q-card-section class="col flex flex-center avatar">
               <q-avatar size="100px">
                 <img src="https://cdn.quasar.dev/img/avatar.png" />
               </q-avatar>
@@ -81,11 +81,11 @@
         </q-card>
       </div>
       <div
-        class="q-pa-md q-ml-lg"
+        class="q-pa-md q-ml-lg qscroll2"
         style="display:flex; justify-content:center;"
       >
         <q-scroll-area
-          class="shadow-2 rounded-borders"
+          class="shadow-2 rounded-borders  qscroll"
           style="height: 400px; width: 400px; background:white;"
         >
           <q-list
@@ -211,5 +211,42 @@ export default {
   background: #f5f5f5;
   margin-bottom: 3%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  .form-card {
+    padding: 1.5%;
+    max-width: 70%;
+    margin: 0 auto;
+    background: none;
+    margin-bottom: 3%;
+    box-shadow: none;
+  }
+
+  .my-card {
+    width: 300px;
+    height: 475px;
+  }
+
+  .card {
+    margin-right: 0px;
+  }
+
+  .avatar {
+    margin-right: 20%;
+  }
+
+  .textMobile {
+    margin: 0;
+    padding-top: 5%;
+  }
+
+  .qscroll {
+    max-width: 300px;
+  }
+
+  .qscroll2 {
+    margin-left: 0px;
+  }
 }
 </style>

@@ -180,9 +180,9 @@ export default {
 </script>
 
 <style scoped>
-/* .box {
+.box {
   display: flex;
   align-items: center;
   justify-content: space-around;
-} */
+}
 </style>

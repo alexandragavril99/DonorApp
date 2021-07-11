@@ -8,10 +8,10 @@
       :config="config"
     />
     <h5
-      class="flex flex-center  text-weight-bold"
-      style="font-family: 'Montserrat-regular', sans-serif;"
+      class="flex flex-center text-weight-medium"
+      style="font-family: 'Montserrat-regular', sans-serif; font-size: 30px;"
     >
-      Cazuri active
+      CAZURI ACTIVE
     </h5>
     <q-carousel
       v-model="slide"
@@ -62,7 +62,7 @@
 
               <template v-slot:control>
                 <div
-                  class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                  class="self-center full-width no-outline text-right text-black text-weight-medium"
                   tabindex="0"
                 >
                   {{ caz.name }}
@@ -85,7 +85,7 @@
 
               <template v-slot:control>
                 <div
-                  class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                  class="self-center full-width no-outline text-right text-black text-weight-medium"
                   tabindex="0"
                 >
                   {{ caz.phone }}
@@ -110,7 +110,7 @@
 
               <template v-slot:control>
                 <div
-                  class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                  class="self-center full-width no-outline text-right text-black text-weight-medium"
                   tabindex="0"
                 >
                   {{ caz.bloodType }}
@@ -124,7 +124,7 @@
               bottom-slots
               :value="caz.quantity"
               class="bg-white"
-              style="padding-bottom:0px; margin-bottom: 6%;  width:225px;"
+              style="padding-bottom:0px; margin-bottom: 6%;  width:225px; text-align:center"
             >
               <template v-slot:prepend>
                 <q-icon name="medical_services" color="primary" />
@@ -135,7 +135,7 @@
 
               <template v-slot:control>
                 <div
-                  class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                  class="self-center full-width no-outline text-right text-black text-weight-medium"
                   tabindex="0"
                 >
                   {{ caz.quantity }}
@@ -148,7 +148,7 @@
           <q-field
             outlined
             bottom-slots
-            :value="caz.quantity"
+            :value="caz.text"
             class="bg-white"
             style="padding-bottom:0px;  max-width:380px;   margin-bottom: 6%;"
           >
@@ -161,8 +161,9 @@
 
             <template v-slot:control>
               <div
-                class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                class="self-center full-width no-outline text-right text-black text-weight-medium"
                 tabindex="0"
+                style="text-align: center;"
               >
                 {{ caz.text }}
               </div>
@@ -171,7 +172,7 @@
           <div class="flex flex-center">
             <q-btn
               class="text-white bg-primary"
-              @click="(alert = true) && (currentCaseId = caz.id)"
+              @click="(alert = true) && (currentCase = caz)"
               >Vreau să ajut</q-btn
             >
           </div>
@@ -182,13 +183,16 @@
       class="q-pa-lg flex flex-center"
       style="font-family: 'Montserrat', sans-serif;"
     >
-      <q-btn class="bg-primary text-white" @click="alert1 = true"
+      <q-btn
+        class="bg-primary text-white"
+        @click="alert1 = true"
+        style="margin-top:2%"
         >Vizualizează restul cazurilor active</q-btn
       >
     </div>
     <q-dialog v-model="alert">
       <q-card>
-        <q-card-section class="q-pa-md">
+        <q-card-section class="q-pa-md" style="margin-top:2%;">
           <div style="text-align:center;">
             Dorești să donezi sânge pentru acest caz? <br />
             Te rugăm să verifici în secțiunea
@@ -219,7 +223,7 @@
     </q-dialog>
     <q-dialog v-model="alert1">
       <q-card style="max-width: 625px; font-family: 'Montserrat', sans-serif;">
-        <q-card-section class="q-pa-md">
+        <q-card-section class="q-pa-md" style="margin-top:2%;">
           <q-carousel
             v-model="slide1"
             swipeable
@@ -263,7 +267,7 @@
 
                     <template v-slot:control>
                       <div
-                        class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                        class="self-center full-width no-outline text-right text-black text-weight-medium"
                         tabindex="0"
                       >
                         {{ caz.name }}
@@ -286,7 +290,7 @@
 
                     <template v-slot:control>
                       <div
-                        class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                        class="self-center full-width no-outline text-right text-black text-weight-medium"
                         tabindex="0"
                       >
                         {{ caz.phone }}
@@ -311,7 +315,7 @@
 
                     <template v-slot:control>
                       <div
-                        class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                        class="self-center full-width no-outline text-right text-black text-weight-medium"
                         tabindex="0"
                       >
                         {{ caz.bloodType }}
@@ -319,13 +323,13 @@
                     </template>
                   </q-field>
                 </div>
-                <div style="margin-left:2%;">
+                <div style="margin-left:2%; ">
                   <q-field
                     outlined
                     bottom-slots
                     :value="caz.quantity"
                     class="bg-white"
-                    style="padding-bottom:0px; margin-bottom: 6%;  width:225px;"
+                    style="padding-bottom:0px; margin-bottom: 6%;  width:225px; "
                   >
                     <template v-slot:prepend>
                       <q-icon name="medical_services" color="primary" />
@@ -336,7 +340,7 @@
 
                     <template v-slot:control>
                       <div
-                        class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                        class="self-center full-width no-outline text-right text-black text-weight-medium "
                         tabindex="0"
                       >
                         {{ caz.quantity }}
@@ -362,8 +366,9 @@
 
                   <template v-slot:control>
                     <div
-                      class="self-center full-width no-outline text-right text-primary text-weight-medium"
+                      class="self-center full-width no-outline text-right text-black text-weight-medium"
                       tabindex="0"
+                      style="text-align:center"
                     >
                       {{ caz.text }}
                     </div>
@@ -373,7 +378,7 @@
             </q-carousel-slide>
           </q-carousel>
         </q-card-section>
-        <q-card-actions align="right">
+        <q-card-actions align="right" style="margin-right:0.9%;">
           <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -384,6 +389,7 @@
 <script>
 import axios from "axios";
 import { ParticlesBg } from "particles-bg-vue";
+import emailjs from "emailjs-com";
 export default {
   name: "DonorEmergencies",
   components: {
@@ -393,7 +399,7 @@ export default {
     return {
       alert: false,
       alert1: false,
-      currentCaseId: null,
+      currentCase: null,
       user: null,
       cases: [],
       compatibleCases: [],
@@ -420,17 +426,37 @@ export default {
     addDonor() {
       axios
         .put(
-          `http://localhost:8081/api/user/addDonor/${this.currentCaseId}`,
+          `http://localhost:8081/api/user/addDonor/${this.currentCase.id}`,
           {},
           { withCredentials: true }
         )
         .then(() => {
-          this.$q.notify({
-            color: "green-4",
-            textColor: "white",
-            icon: "done",
-            message: "Mulțumim! Te vom contacta în scurt timp."
-          });
+          let email = {
+            from_name: this.currentCase.name,
+            from_bloodType: this.currentCase.bloodType,
+            from_quantity: this.currentCase.quantity,
+            name: this.user.name,
+            surname: this.user.surname,
+            email: this.user.email,
+            phone: this.user.phone,
+            bloodType: this.user.bloodType
+          };
+          emailjs
+            .send(
+              "service_hl38kq9",
+              "template_c0ly6m7",
+              email,
+              "user_VjcMM8oTycSIIgQDYDhpG"
+            )
+            .then(() =>
+              this.$q.notify({
+                color: "green-4",
+                textColor: "white",
+                icon: "done",
+                message: "Mulțumim! Te vom contacta în scurt timp."
+              })
+            )
+            .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
     }

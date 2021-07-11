@@ -6,6 +6,7 @@
           v-model="tab"
           class="shadow-2 bg-secondary swipeable text-primary"
           align="right"
+          style="font-family: 'Montserrat', sans-serif;"
         >
           <!-- <img class="logo" alt="Logo" src="../assets/logo-donor.png" /> -->
 
@@ -35,7 +36,7 @@
               </div>
             </template>
 
-            <q-list>
+            <q-list style="font-family: 'Montserrat', sans-serif;">
               <q-item
                 name="appointment"
                 label="Programează-te"
@@ -60,7 +61,7 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
-          <q-tab
+          <!-- <q-tab
             v-else
             name="appointmentsDoctor"
             label="Programări donatori"
@@ -68,7 +69,42 @@
             class="tabsList"
             clickable
             @click="$router.push('/doctorAppointment').catch(err => {})"
-          ></q-tab>
+          ></q-tab> -->
+          <q-btn-dropdown v-else auto-close stretch flat clickable>
+            <template v-slot:label>
+              <div>
+                <div class="row justify-around items-center no-wrap">
+                  <q-icon name="build" />
+                </div>
+                <div class="row items-center no-wrap">
+                  Administrare
+                </div>
+              </div>
+            </template>
+
+            <q-list style="font-family: 'Montserrat', sans-serif;">
+              <q-item
+                name="adminAppointments"
+                class="bg-secondary text-primary text-weight-medium"
+                clickable
+                @click="$router.push('/doctorAppointment').catch(err => {})"
+              >
+                <q-item-section style="text-align:center;"
+                  >Administrare programări</q-item-section
+                >
+              </q-item>
+
+              <q-item
+                name="adminDonors"
+                class="bg-secondary text-primary text-weight-medium"
+                clickable
+              >
+                <q-item-section style="text-align:center;"
+                  >Administrare donatori</q-item-section
+                >
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
           <q-tab
             name="profile"
             label="Profil"

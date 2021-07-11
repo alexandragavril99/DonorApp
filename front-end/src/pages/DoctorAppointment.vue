@@ -395,6 +395,7 @@
 import axios from "axios";
 import { ParticlesBg } from "particles-bg-vue";
 export default {
+  name: "doctorAppointment",
   components: {
     ParticlesBg
   },

@@ -414,15 +414,8 @@ export default {
           } else this.rows1.push(element);
         });
 
-        console.log(this.rows);
-        console.log(this.rows1);
-
         this.max = this.rows1.length;
         this.rows1.forEach(element => {
-          // const diffInMilliSeconds = Math.abs(
-          //   new Date(element.updatedAt) - new Date(element.createdAt)
-          // );
-          // const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
           let hours =
             Math.abs(
               new Date(element.updatedAt) - new Date(element.createdAt)
@@ -443,7 +436,7 @@ export default {
               {
                 label: "Frecvență donare pe 2021",
                 data: [this.nr1 / this.max, this.nr2 / this.max],
-                backgroundColor: ["#B43636", "#F05440", ""],
+                backgroundColor: ["#B43636", "#F05440"],
                 hoverOffset: 4
               }
             ]
@@ -457,7 +450,6 @@ export default {
             plugins: {
               legend: {
                 labels: {
-                  // This more specific font property overrides the global property
                   font: {
                     family: "Montserrat",
                     size: 14

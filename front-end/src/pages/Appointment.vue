@@ -10,14 +10,14 @@
     <h6
       v-if="state == 0"
       class="q-pa-md flex flex-center"
-      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif;"
+      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif; text-align: center;"
     >
       Timp rămas până la următoarea programare:
     </h6>
     <h6
       v-else
       class="q-pa-md flex flex-center"
-      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif;"
+      style="margin:0; padding-bottom:0; font-family: 'Montserrat', sans-serif; text-align: center;"
     >
       Timpul a expirat!
     </h6>
@@ -36,20 +36,20 @@
     <h6
       v-if="state == 0"
       class="q-pa-md flex flex-center"
-      style="margin:0;font-family: 'Montserrat', sans-serif;"
+      style="margin:0;font-family: 'Montserrat', sans-serif; text-align: center;"
     >
       Momentan formularul nu este disponibil. Vă așteptăm după timpul precizat.
     </h6>
     <h6
       v-else
       class="q-pa-md flex flex-center"
-      style="margin:0; font-family: 'Montserrat', sans-serif;"
+      style="margin:0; font-family: 'Montserrat', sans-serif; text-align: center;"
     >
       Realizează o programare completând formularul de mai jos.
     </h6>
     <div class="form-card rounded-borders">
       <div class="q-pa-md flex flex-center">
-        <div class="q-pa-md q-mr-lg">
+        <div class="q-pa-md q-mr-lg date">
           <q-date
             v-model="date"
             landscape
@@ -66,9 +66,9 @@
             >
           </q-item-section>
         </div>
-        <div class="q-pa-md q-ml-lg">
+        <div class="q-pa-md q-ml-lg scroll">
           <q-scroll-area
-            class="shadow-2 rounded-borders"
+            class="shadow-2 rounded-borders qscroll"
             style="height: 290px; width: 400px; background:white;"
           >
             <q-list v-for="(hour, index) in hoursArray" :key="hour">
@@ -306,5 +306,25 @@ export default {
   background: #f5f5f5;
   margin-bottom: 3%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  .form-card {
+    background: none;
+    box-shadow: none;
+  }
+
+  .date {
+    margin-right: 0px;
+  }
+
+  .scroll {
+    margin-left: 0px;
+  }
+
+  .qscroll {
+    width: none;
+    width: 200px;
+  }
 }
 </style>
