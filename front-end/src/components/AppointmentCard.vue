@@ -141,6 +141,7 @@
 
       <q-card-actions class="bg-secondary" vertical align="center">
         <q-btn
+          v-if="currentDate == true"
           unlevated
           color="primary"
           style="margin-bottom: 6%;"
@@ -152,8 +153,12 @@
           :href="'/uploads/' + analysisBulletin"
           class="button"
           download
+          style="margin-bottom: 6%;"
           >Descarcă buletin analize</a
         >
+        <div v-else class="q-pa-md text-weight-medium text-center">
+          Momentan nu există buletinul de analize pentru această programare.
+        </div>
       </q-card-actions>
     </q-card>
 

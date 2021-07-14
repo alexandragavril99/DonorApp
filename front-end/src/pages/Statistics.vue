@@ -15,13 +15,14 @@
           STATISTICI CENTRU
         </h4>
       </div>
-      <div class="flex" style="flex-wrap: nowrap; margin-top: 2%;">
+      <div class="flex graph" style="flex-wrap: nowrap; margin-top: 2%;">
         <div class="q-pa-md">
           <canvas
             id="myChart1"
             width="450"
             height="400"
             style="background:white;"
+            class="canvas"
           ></canvas>
         </div>
         <div class="q-pa-md">
@@ -30,6 +31,7 @@
             width="450"
             height="400"
             style="background:white;"
+            class="canvas"
           ></canvas>
         </div>
         <div class="q-pa-md">
@@ -38,6 +40,7 @@
             width="400"
             height="400"
             style="background:white;"
+            class="canvas"
           ></canvas>
         </div>
       </div>
@@ -245,7 +248,7 @@ export default {
             datasets: [
               {
                 label: "Frecvență donare pe 2021",
-               // data: dataYear,
+                // data: dataYear,
                 data: [500, 700, 400],
                 backgroundColor: ["#B43636", "#283150", "#F05440"],
                 hoverOffset: 4
@@ -260,7 +263,7 @@ export default {
             },
             plugins: {
               legend: {
-                labels: {
+                l9abels: {
                   // This more specific font property overrides the global property
                   font: {
                     family: "Montserrat",
@@ -276,4 +279,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+@media only screen and (max-width: 600px) {
+  .graph {
+    flex-direction: column;
+  }
+
+  .canvas {
+    max-width: 375px !important;
+  }
+}
+</style>

@@ -129,6 +129,11 @@ const controller = {
       const user = await req.user;
 
       if (user.isDoctor) {
+        const employee = await EmployeeDB.findOne({
+          where: {
+            id: user.id,
+          },
+        });
         const userData = {
           name: user.name,
           surname: user.surname,
@@ -138,8 +143,12 @@ const controller = {
           birthDate: user.birthDate,
           bloodType: user.bloodType,
           weight: user.weight,
+          isDoctor: user.isDoctor,
+          level: employee.level,
+          dateOfEmployment: employee.dateOfEmployment,
         };
 
+        console.log(userData);
         res.status(200).send(userData);
       } else {
         const donationsHistory = await DonationsHistoryDB.findAll({
@@ -160,6 +169,7 @@ const controller = {
           bloodType: user.bloodType,
           weight: user.weight,
           lastDonation: lastDonation.dateOfDonation,
+          isDoctor: user.isDoctor,
         };
 
         res.status(200).send(userData);

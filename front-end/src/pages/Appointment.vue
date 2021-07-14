@@ -233,6 +233,7 @@ export default {
             });
           });
         });
+      this.$router.push("/viewAppointments");
     }
   },
   watch: {

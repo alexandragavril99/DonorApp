@@ -8,8 +8,8 @@
       :config="config"
     />
     <q-dialog v-model="confirm2" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
+      <q-card style=" font-family: 'Montserrat', sans-serif;">
+        <q-card-section class="row items-center q-pa-md">
           <q-avatar
             icon="notification_important"
             color="primary"
@@ -18,14 +18,14 @@
           <span class="q-ml-sm">Dorești închiderea cazului?</span>
         </q-card-section>
 
-        <q-card-actions align="right">
+        <q-card-actions align="center">
           <q-btn flat label="Da" color="primary" @click="editItem" />
           <q-btn flat label="Nu" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
     <q-dialog v-model="confirm" persistent>
-      <q-card style="max-width:80%;">
+      <q-card style="max-width:80%; font-family: 'Montserrat', sans-serif;">
         <q-card-section class="row items-center">
           <q-table
             title="Cazuri active"
@@ -66,7 +66,7 @@
               </q-tr>
               <q-tr
                 :props="props"
-                :key="`${'A'+props.row.id}`"
+                :key="`${'A' + props.row.id}`"
                 class="q-virtual-scroll--with-prev"
               >
                 <q-td colspan="100%">
@@ -87,7 +87,10 @@
     </q-dialog>
     <q-dialog v-model="confirm1" persistent>
       <q-card style="max-width:80%;">
-        <q-card-section class="row items-center">
+        <q-card-section
+          class="row items-center"
+          style="font-family: 'Montserrat', sans-serif;"
+        >
           <q-table
             title="Cazuri încheiate"
             :data="rows1"
@@ -133,8 +136,11 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <div class="row" style="margin-top: 0.5%;">
-      <div class="col-6 q-pa-md" style="display:flex; justify-content:center;">
+    <div class="row mainDiv" style="margin-top: 0.5%;">
+      <div
+        class="col-6 q-pa-md cardDiv"
+        style="display:flex; justify-content:center;"
+      >
         <q-card class="my-card">
           <q-card-section class="bg-secondary">
             <h6
@@ -468,5 +474,16 @@ export default {
 .my-card {
   width: 100%;
   max-width: 350px;
+}
+
+@media only screen and (max-width: 600px) {
+  .mainDiv {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cardDiv {
+    width: 325px;
+  }
 }
 </style>

@@ -63,9 +63,18 @@ const routes = [
     children: [{ path: "", component: () => import("pages/Emergencies.vue") }]
   },
   {
-    path:"/donorEmergencies",
+    path: "/donorEmergencies",
     component: () => import("layouts/MenuLayout.vue"),
-    children: [{ path: "", component: () => import("pages/DonorEmergencies.vue") }]
+    children: [
+      { path: "", component: () => import("pages/DonorEmergencies.vue") }
+    ]
+  },
+  {
+    path: "/donorAdministration",
+    component: () => import("layouts/MenuLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/DonorAdministration.vue") }
+    ]
   }
 ];
 

@@ -98,6 +98,7 @@
                 name="adminDonors"
                 class="bg-secondary text-primary text-weight-medium"
                 clickable
+                @click="$router.push('/donorAdministration').catch(err => {})"
               >
                 <q-item-section style="text-align:center;"
                   >Administrare donatori</q-item-section
@@ -180,6 +181,7 @@
         show-if-above
         bordered
         content-class="bg-grey-1 mobileMenu"
+        style=" font-family: 'Montserrat', sans-serif;"
       >
         <q-list>
           <q-item clickable exact to="/">
@@ -187,15 +189,39 @@
               <q-icon name="home" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Acasa</q-item-label>
+              <q-item-label>Acasă</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable exact to="/doctorAppointment">
+          <q-item v-if="admin" clickable exact to="/doctorAppointment">
             <q-item-section avatar>
               <q-icon name="event" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Programări donatori</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-else clickable exact to="/appointment">
+            <q-item-section avatar>
+              <q-icon name="event" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Programează-te</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-if="admin" clickable exact to="/donorAdministration">
+            <q-item-section avatar>
+              <q-icon name="build" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Administrare donatori</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-else clickable exact to="/viewAppointments">
+            <q-item-section avatar>
+              <q-icon name="search" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Vizualizare programări</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable exact to="/profile">
@@ -206,7 +232,7 @@
               <q-item-label>Profil</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable exact to="/">
+          <q-item v-if="admin" clickable exact to="/emergencies">
             <q-item-section avatar>
               <q-icon name="healing" />
             </q-item-section>
@@ -214,12 +240,28 @@
               <q-item-label>Ajutor</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable exact to="/doctorAppointment">
+          <q-item v-else clickable exact to="/donorEmergencies">
+            <q-item-section avatar>
+              <q-icon name="healing" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Ajutor</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-if="admin" clickable exact to="/statistics">
             <q-item-section avatar>
               <q-icon name="analytics" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Statistici</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-else clickable exact to="/ranking">
+            <q-item-section avatar>
+              <q-icon name="star_rate" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Scor</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable @click="logout">

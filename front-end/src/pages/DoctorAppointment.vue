@@ -7,7 +7,10 @@
       :bg="true"
       :config="config"
     />
-    <div class="q-gutter-y-md" style="max-width: 70%; margin: 0 auto;">
+    <div
+      class="q-gutter-y-md mainDiv"
+      style="max-width: 70%; margin: 0 auto; font-family: 'Montserrat', sans-serif;"
+    >
       <q-card>
         <q-tabs
           v-model="tab"
@@ -146,7 +149,7 @@
                       >
                       <q-btn
                         color="primary"
-                        style="max-width: 180px;"
+                        style="max-width: 166px;"
                         @click="
                           (loaded = true) && (currentAppointment = props.row)
                         "
@@ -186,7 +189,9 @@
       </q-dialog>
 
       <q-dialog v-model="prompt" persistent>
-        <q-card style="min-width: 350px;">
+        <q-card
+          style="min-width: 350px; font-family: 'Montserrat', sans-serif;"
+        >
           <q-card-section>
             <div class="text-h6 flex flex-center">Date donator</div>
           </q-card-section>
@@ -284,7 +289,7 @@
 
           <div class="flex flex-center">
             <q-btn class="bg-primary text-white" @click="showLastDonations"
-              >Vizualizare donări anterioare</q-btn
+              >Vizualizare istoric donări</q-btn
             >
           </div>
 
@@ -301,23 +306,55 @@
       </q-dialog>
 
       <q-dialog v-model="show">
-        <q-card>
+        <q-card style="font-family: 'Montserrat', sans-serif; max-width: 700px">
           <q-table
             title="Istoric donări"
             :data="dataDonor"
             :columns="columns3"
             row-key="name"
             no-data-label="Nu există alte programări trecute."
-          />
+          >
+            <template v-slot:header="props">
+              <q-tr :props="props">
+                <q-th v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.label }}
+                </q-th>
+                <q-th>Descarcă analize</q-th>
+              </q-tr>
+            </template>
+            <template v-slot:body="props">
+              <q-tr :props="props" :key="`${props.row.id}`">
+                <q-td v-for="col in props.cols" :key="col.name" :props="props">
+                  {{ col.value }}
+                </q-td>
+                <q-td align="center">
+                  <a
+                    v-if="props.row.analysisBulletin"
+                    :href="'/uploads/' + props.row.analysisBulletin"
+                    download
+                    class="qicon"
+                    :disable="props.row.analysisBulletin == null"
+                  >
+                    <q-icon name="file_download"></q-icon>
+                  </a>
+                  <div v-else>
+                    -
+                  </div>
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
 
           <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup />
+            <q-btn flat label="Cancel" color="primary" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
 
       <q-dialog v-model="edit">
-        <q-card style="min-width: 300px; min-height: 300px;">
+        <q-card
+          style="min-width: 300px; min-height: 300px; font-family: 'Montserrat', sans-serif;"
+        >
           <q-card-section>
             <div class="text-h6 flex flex-center">Date donator</div>
           </q-card-section>
@@ -361,7 +398,7 @@
       </q-dialog>
 
       <q-dialog v-model="loaded" persistent>
-        <q-card>
+        <q-card style="font-family: 'Montserrat', sans-serif;">
           <q-card-section>
             <div class="text-h6 flex flex-center">
               Încărcare buletin analize
@@ -502,21 +539,28 @@ export default {
           name: "hour",
           align: "center",
           label: "Ora programării",
-          field: "schedulingTime",
-          sortable: true
+          field: "schedulingTime"
         },
         {
           name: "doctorName",
           label: "Nume doctor",
           field: row =>
             row.employee.user.name + " " + row.employee.user.surname,
-          sortable: true
+          align: "center"
+        },
+        {
+          name: "wasPresent",
+          label: "Prezent",
+          field: "wasPresent",
+          format: val => (val ? "Da" : "Nu"),
+          align: "center"
         },
         {
           name: "isCompleted",
           label: "Este finalizată?",
           field: "isCompleted",
-          format: val => (val ? "Da" : "Nu")
+          format: val => (val ? "Da" : "Nu"),
+          align: "center"
         }
       ],
       data: [],
@@ -548,7 +592,7 @@ export default {
 
           this.data.splice(index, 1);
           console.log(this.data);
-          this.newData.push(this.currentAppointment);
+          this.newData.unshift(this.currentAppointment);
           this.currentAppointment = {};
         })
         .catch(err => console.log(err));
@@ -707,8 +751,9 @@ export default {
         withCredentials: true
       })
       .then(response => {
-        this.newData = response.data;
-        console.log(response.data);
+        const data = response.data;
+        this.newData = data.reverse();
+        // console.log(response.data);
       })
       .catch(err => {
         console.log(err);
@@ -722,5 +767,17 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.qicon {
+  text-decoration: none;
+  color: #b22222;
+  font-size: 18px;
+}
+
+@media only screen and (max-width: 600px) {
+  .mainDiv {
+    max-width: 85% !important;
+  }
 }
 </style>

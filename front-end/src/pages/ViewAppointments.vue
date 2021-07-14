@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-xl row justify-around">
+  <div class="q-pa-xl row justify-around mainDiv">
     <particles-bg
       num="10"
       type="custom"
@@ -7,9 +7,10 @@
       :bg="true"
       :config="config"
     />
-    <div class="col-4" style="display:flex; justify-content:center;">
-      <div style="width:300px; height:400px;">
+    <div class="col-4 " style="display:flex; justify-content:center;">
+      <div style="width:300px; height:400px;" class="divCard">
         <AppointmentCard
+          class="card"
           :key="componentKey"
           v-if="loaded"
           :id="appointment.id"
@@ -29,14 +30,44 @@
       <q-table
         :key="componentKey"
         v-if="loaded"
-        class="q-pa-md"
+        class="q-pa-md table"
         title="Istoric programări"
         :data="data"
         :columns="columns"
         no-data-label="Nu aveți nicio programare trecută inregistrată."
         row-key="name"
         style="font-family: 'Montserrat', sans-serif;"
-      />
+      >
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.label }}
+            </q-th>
+            <q-th>Descarcă analize</q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props" :key="`${props.row.id}`">
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+            <q-td align="center">
+              <a
+                v-if="props.row.analysisBulletin"
+                :href="'/uploads/' + props.row.analysisBulletin"
+                download
+                class="qicon"
+                :disable="props.row.analysisBulletin == null"
+              >
+                <q-icon name="file_download"></q-icon>
+              </a>
+              <div v-else>
+                -
+              </div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
     </div>
   </div>
 </template>
@@ -64,20 +95,20 @@ export default {
           label: "Data",
           align: "center",
           field: row => row.date,
-          format: val => `${val}`,
+          format: val => `${val}`
         },
         {
           name: "hour",
           align: "center",
           label: "Ora",
-          field: "schedulingTime",
+          field: "schedulingTime"
         },
         {
           name: "doctorName",
           label: "Nume Doctor",
           field: row =>
             row.employee.user.name + " " + row.employee.user.surname,
-          align: "center",
+          align: "center"
         },
         {
           name: "wasPresent",
@@ -133,7 +164,9 @@ export default {
         this.data.splice(this.data.length - 1, 1);
       } else this.appointment = {};
       this.currentDate = false;
-    }
+    },
+
+    downloadFile(row) {}
   },
   watch: {
     componentKey(n, o) {
@@ -165,7 +198,8 @@ export default {
           this.data.splice(this.data.length - 1, 1);
 
           if (
-            Date.parse(new Date(this.appointment.date)) > Date.parse(new Date())
+            Date.parse(new Date(this.appointment.date)) >=
+            Date.parse(new Date())
           ) {
             this.currentDate = true;
           }
@@ -184,5 +218,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.qicon {
+  text-decoration: none;
+  color: #b22222;
+  font-size: 18px;
+}
+
+@media only screen and (max-width: 600px) {
+  .mainDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 280px;
+  }
+
+  .table {
+    margin-top: 45%;
+  }
 }
 </style>

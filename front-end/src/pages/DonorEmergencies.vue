@@ -21,7 +21,7 @@
       navigation
       padding
       arrows
-      class="bg-secondary text-primary rounded-borders"
+      class="bg-secondary text-primary rounded-borders carousel"
       style="max-width:70%; margin: 0 auto; font-family: 'Montserrat-regular', sans-serif; max-height: 375px;"
     >
       <q-carousel-slide
@@ -43,10 +43,10 @@
         :key="caz.id"
         :name="caz.id"
       >
-        <h6 class="q-pa-md text-center text-black" style="margin: 0;">
+        <h6 class="q-pa-md text-center text-black texth6" style="margin: 0;">
           Cazuri compatibile cu grupa dumneavoastră sanguină
         </h6>
-        <div style="display: flex;">
+        <div style="display: flex;" class="infoDiv">
           <div style="margin-right:2%;">
             <q-field
               outlined
@@ -70,7 +70,7 @@
               </template>
             </q-field>
           </div>
-          <div style="margin-left:2%;">
+          <div style="margin-left:2%;" class="inputLeft">
             <q-field
               outlined
               bottom-slots
@@ -94,7 +94,7 @@
             </q-field>
           </div>
         </div>
-        <div style="display: flex;">
+        <div style="display: flex;" class="infoDiv">
           <div style="margin-right:2%;">
             <q-field
               outlined
@@ -118,7 +118,7 @@
               </template>
             </q-field>
           </div>
-          <div style="margin-left:2%;">
+          <div style="margin-left:2%;" class="inputLeft">
             <q-field
               outlined
               bottom-slots
@@ -193,7 +193,7 @@
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section class="q-pa-md" style="margin-top:2%;">
-          <div style="text-align:center;">
+          <div style="text-align:center; font-family: 'Montserrat', sans-serif">
             Dorești să donezi sânge pentru acest caz? <br />
             Te rugăm să verifici în secțiunea
             <span
@@ -204,12 +204,15 @@
             >
             dacă poți realiza o donare. <br />
             Dacă donarea este posibilă, bifează
-            <span class="text-primary text-weight-medium"> DA </span>, iar noi
-            te vom contacta în scurt timp!
+            <span class="text-primary text-weight-medium"> DA</span>, iar noi te
+            vom contacta în scurt timp!
           </div>
         </q-card-section>
 
-        <q-card-actions align="center">
+        <q-card-actions
+          align="center"
+          style=" font-family: 'Montserrat', sans-serif"
+        >
           <q-btn
             flat
             label="DA"
@@ -232,7 +235,7 @@
             navigation
             padding
             arrows
-            class="bg-secondary text-primary rounded-borders"
+            class="bg-secondary text-primary rounded-borders carousel carousel1"
             style="margin: 0 auto; font-family: 'Montserrat-regular', sans-serif; max-height: 350px; max-width: 100%;"
           >
             <q-carousel-slide
@@ -242,14 +245,14 @@
               :name="caz.id"
             >
               <h6
-                class="q-pa-md text-center text-black text-subtitle2"
+                class="q-pa-md text-center text-black text-subtitle2 texth6 dialogh6"
                 style="margin: 0;"
               >
                 Cazuri incompatibile cu grupa dumneavoastră sanguină. <br />
                 Dacă aveți cunoștinte compatibile și disponibile, sunați la
                 numărul afișat. Mulțumim!
               </h6>
-              <div style="display: flex;">
+              <div style="display: flex;" class="infoDiv">
                 <div style="margin-right:2%;">
                   <q-field
                     outlined
@@ -275,7 +278,7 @@
                     </template>
                   </q-field>
                 </div>
-                <div style="margin-left:2%;">
+                <div style="margin-left:2%;" class="inputLeft">
                   <q-field
                     outlined
                     bottom-slots
@@ -299,7 +302,7 @@
                   </q-field>
                 </div>
               </div>
-              <div style="display: flex;">
+              <div style="display: flex;" class="infoDiv">
                 <div style="margin-right:2%;">
                   <q-field
                     outlined
@@ -323,7 +326,7 @@
                     </template>
                   </q-field>
                 </div>
-                <div style="margin-left:2%; ">
+                <div style="margin-left:2%;" class="inputLeft">
                   <q-field
                     outlined
                     bottom-slots
@@ -550,4 +553,32 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+@media only screen and (max-width: 600px) {
+  .carousel {
+    max-width: none !important;
+    max-height: none !important;
+    height: 580px;
+  }
+
+  .texth6 {
+    padding: 0px 0px;
+  }
+
+  .infoDiv {
+    flex-direction: column;
+  }
+
+  .inputLeft {
+    margin-left: 0% !important;
+  }
+
+  .carousel1 {
+    height: 450px;
+  }
+
+  .dialogh6 {
+    margin-top: 110% !important;
+  }
+}
+</style>

@@ -233,7 +233,7 @@ export default {
   }
 
   .avatar {
-    margin-right: 20%;
+    margin-right: 15%;
   }
 
   .textMobile {

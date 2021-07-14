@@ -8,12 +8,16 @@
       :config="config"
     />
     <div
-      class="q-pa-md"
+      class="q-pa-md margDiv"
       style="display:flex; flex-direction: row; font-family: 'Montserrat', sans-serif; margin-left: 4%;"
     >
       <div v-if="user" style="max-width:45%;" class="q-pa-md col">
         <h4>Bun venit, {{ user.name }}!</h4>
-        <div style="font-size: medium; text-align: justify;">
+        <div
+          v-if="user.isDoctor == null"
+          style="font-size: medium; text-align: justify;"
+          class="text"
+        >
           Ne bucurăm că ești utilizator al platformei
           <span class="text-primary text-weight-bold">Donor</span>. <br />
           Cu ajutorul lui Donor dorim să creștem cât mai mult comunitatea
@@ -22,19 +26,37 @@
           salva viața unui om în pericol. <br />
           Te invităm să accesezi pagina dedicată programărilor.
         </div>
+        <div
+          v-else
+          style="font-size: medium; text-align: justify;"
+          class="text"
+        >
+          Ne bucurăm că ești utilizator al platformei
+          <span class="text-primary text-weight-bold">Donor</span>. <br />
+          Cu ajutorul lui Donor dorim să creștem cât mai mult comunitatea
+          donatorilor de sânge din România. Aplicația este dedicată atât
+          doctorilor, cât și donatorilor, și sperăm câ este utilă ambelor tipuri
+          de utilizatori.<br />
+          Te invităm, în calitate de medic, să accesezi pagina dedicată
+          programărilor și să vizualizezi noile programări apărute.
+        </div>
         <div class="q-pa-md" style="margin-left:23%; margin-top:6%;">
           <q-btn
-            class="bg-primary text-white"
+            v-if="user.isDoctor == null"
+            class="bg-primary text-white btn"
             @click="$router.push('/appointment').catch(err => {})"
+            >Accesează pagină programări</q-btn
+          >
+          <q-btn
+            v-else
+            class="bg-primary text-white btn"
+            @click="$router.push('/doctorAppointment').catch(err => {})"
             >Accesează pagină programări</q-btn
           >
         </div>
       </div>
-      <div class="col flex flex-center">
-        <img
-          src="../assets/undraw_doctors_hwty.svg"
-          style="height: 400x; max-width: 600px"
-        />
+      <div class="col flex flex-center divImg">
+        <div src="../assets/undraw_doctors_hwty.svg" style="" class="image" />
       </div>
     </div>
     <div>
@@ -71,8 +93,8 @@
           </q-card-section>
           <q-card-section class="q-pa-md">
             <h6 style="margin: 0; font-weight: 400;">
-              ...donatorii obțin anumite beneficii precum analize gratuite
-              și reduceri la mijloacele de transport?
+              ...donatorii obțin anumite beneficii precum analize gratuite și
+              reduceri la mijloacele de transport?
             </h6>
           </q-card-section>
         </q-card>
@@ -143,5 +165,55 @@ export default {
   background: #f5f5f5;
   text-align: center;
   font-family: "Montserrat";
+}
+
+.image {
+  background-image: url("../assets/undraw_doctors_hwty.svg");
+  height: 450px;
+  width: 610px;
+  background-position: center;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 600px) {
+  .margDiv {
+    margin-left: 0% !important;
+  }
+
+  .image {
+    background-image: url("../assets/undraw_doctors_hwty.svg");
+    height: 220px;
+    width: 300px;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .divImg {
+    position: absolute;
+  }
+
+  h4 {
+    margin-top: 210%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .text {
+    width: 280px;
+  }
+
+  .btn {
+    width: 200px;
+  }
+
+  .my-card {
+    width: 100%;
+    max-width: 275px;
+    height: 410px;
+    background: #f5f5f5;
+    text-align: center;
+    font-family: "Montserrat";
+    margin-bottom: 5%;
+  }
 }
 </style>

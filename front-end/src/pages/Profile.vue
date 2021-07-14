@@ -185,6 +185,22 @@
         {{ user.name + " " + user.surname }}
       </q-card-section>
 
+      <q-card-section
+        v-if="user.isDoctor"
+        class="text-h6 text-primary q-card-name"
+      >
+        <q-chip
+          size="lg"
+          outline
+          square
+          color="primary"
+          text-color="white"
+          icon="work"
+        >
+          {{ user.level }}
+        </q-chip>
+      </q-card-section>
+
       <q-card-section class="text-h6 text-primary q-card-name">
         <q-chip
           size="lg"
@@ -258,8 +274,17 @@
           {{ user.bloodType }}
         </q-chip>
       </q-card-section>
-      <q-card-section class="text-h6 text-primary q-card-name text-weight-bold">
+      <q-card-section
+        v-if="user.isDoctor == null"
+        class="text-h6 text-primary q-card-name text-weight-bold"
+      >
         Ultima dată a donării: {{ user.lastDonation }}
+      </q-card-section>
+      <q-card-section
+        v-if="user.isDoctor"
+        class="text-h6 text-primary q-card-name text-weight-bold"
+      >
+        Data angajării: {{ user.dateOfEmployment }}
       </q-card-section>
       <q-card-section class="text-h6 text-primary q-card-name">
         <q-btn color="primary" @click="passwordDialog = true">
