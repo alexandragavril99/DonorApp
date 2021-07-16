@@ -198,6 +198,15 @@
             class="registerBtn"
           />
         </div>
+        <div>
+          <span
+            @click="$router.push('/login').catch(err => {})"
+            clickable
+            class="text-primary text-weight-bold"
+            style=" font-family: 'Montserrat', sans-serif;"
+            >Accesează pagina de autentificare.</span
+          >
+        </div>
       </q-form>
     </div>
   </div>

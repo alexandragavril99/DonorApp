@@ -3,6 +3,22 @@ const router = express.Router();
 const userController = require("../controllers").user;
 const passport = require("passport");
 
+const multer = require("multer");
+
+const store = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../front-end/public/profilePictures");
+  },
+  filename: async function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: store,
+  limits: { fileSize: 5_242_881 }, // Am adăugat limită de 5MB + 1 byte
+});
+
 router.post("/register", userController.register);
 
 router.post(
@@ -107,5 +123,12 @@ router.get(
 );
 
 router.put("/addDonor/:id", checkNotAuth, userController.addDonor);
+
+router.post(
+  "/updateProfilePicture",
+  upload.single("profilePicture"),
+  checkNotAuth,
+  userController.updateProfilePicture
+);
 
 module.exports = { router, checkAuth, checkNotAuth, checkAdmin };

@@ -94,4 +94,18 @@ router.get(
   adminController.getPercentageOfCases
 );
 
+router.get("/getAllDonors", checkNotAuth, adminController.getAllDonors);
+
+router.put(
+  "/updateProfileByDoctor/:id",
+  checkNotAuth,
+  adminController.updateProfileByDoctor
+);
+
+router.put(
+  "/updateDonorsState/:id",
+  checkNotAuth,
+  adminController.updateDonorsState
+);
+
 module.exports = router;

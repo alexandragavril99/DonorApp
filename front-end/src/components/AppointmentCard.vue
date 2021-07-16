@@ -106,37 +106,6 @@
             </div>
           </template>
         </q-field>
-
-        <!-- <q-field
-          v-if="!currentDate"
-          outlined
-          bottom-slots
-          :value="isCompleted"
-          class="bg-white"
-          style="padding-bottom:0px;"
-        >
-          <template v-slot:prepend>
-            <q-icon name="check" color="primary" />
-            <div class="text-subtitle2 text-primary">Donat cu succes:</div>
-          </template>
-
-          <template v-slot:control>
-            <div
-              v-if="isCompleted == 1"
-              class="self-center full-width no-outline text-right text-primary text-weight-medium"
-              tabindex="0"
-            >
-              Da
-            </div>
-            <div
-              v-else
-              class="self-center full-width no-outline text-right text-primary text-weight-medium"
-              tabindex="0"
-            >
-              Nu
-            </div>
-          </template>
-        </q-field> -->
       </q-card-section>
 
       <q-card-actions class="bg-secondary" vertical align="center">

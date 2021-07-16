@@ -7,15 +7,19 @@
       :bg="true"
       :config="config"
     />
-    <h5
-      class="flex flex-center text-weight-bold textMobile"
-      style="font-family: 'Montserrat', sans-serif;"
+    <div class="flex flex-center q-pa-md">
+      <h4
+        style="margin:0; margin-top:3%; margin-bottom:1.5%; font-family: 'Montserrat-bold', sans-serif;"
+      >
+        Clasament utilizatori
+      </h4>
+    </div>
+    <div
+      class="flex flex-center form-card rounded-borders"
+      style="justify-content: space-around;"
     >
-      Clasament utilizatori
-    </h5>
-    <div class="flex flex-center form-card rounded-borders">
       <div
-        class="q-pa-md q-mr-lg card"
+        class="q-pa-md card"
         style="display:flex; justify-content:center; font-family: 'Montserrat', sans-serif;"
       >
         <q-card v-if="user" class="my-card" flat bordered>
@@ -35,10 +39,23 @@
               </div>
             </q-card-section>
 
-            <q-card-section class="col flex flex-center avatar">
-              <q-avatar size="100px">
-                <img src="https://cdn.quasar.dev/img/avatar.png" />
-              </q-avatar>
+            <q-card-section class="col flex flex-center">
+              <div class="header-recruit">
+                <div class="profile-picture-box">
+                  <img
+                    class="baby"
+                    v-if="user.profilePicture"
+                    :src="`../profilePictures/${user.profilePicture}`"
+                    alt="recruit-photo"
+                  />
+                  <img
+                    v-else
+                    :src="require(`../assets/avatar.png`)"
+                    alt=""
+                    class="baby"
+                  />
+                </div>
+              </div>
             </q-card-section>
           </q-card-section>
           <q-card-section style="font-family: 'Montserrat', sans-serif;">
@@ -81,7 +98,7 @@
         </q-card>
       </div>
       <div
-        class="q-pa-md q-ml-lg qscroll2"
+        class="q-pa-md qscroll2"
         style="display:flex; justify-content:center;"
       >
         <q-scroll-area
@@ -132,9 +149,22 @@
                 </q-chip></q-item-section
               >
               <q-item-section avatar>
-                <q-avatar square>
-                  <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-                </q-avatar>
+                <div class="header-recruit">
+                  <div class="profile-picture-box2">
+                    <img
+                      class="baby"
+                      v-if="user.profilePicture"
+                      :src="`../profilePictures/${user.profilePicture}`"
+                      alt="recruit-photo"
+                    />
+                    <img
+                      v-else
+                      :src="require(`../assets/avatar.png`)"
+                      alt=""
+                      class="baby"
+                    />
+                  </div>
+                </div>
               </q-item-section>
             </q-item>
           </q-list>
@@ -211,6 +241,41 @@ export default {
   background: #f5f5f5;
   margin-bottom: 3%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.header-recruit {
+  display: flex;
+  justify-content: center;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  color: #fff;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture-box {
+  position: relative;
+  z-index: 10;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+
+.profile-picture-box2 {
+  position: relative;
+  z-index: 10;
+  width: 35px;
+  height: 35px;
+}
+
+.baby {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 130px;
+  /* border-style: solid;
+  border-color: #b22222; */
+  z-index: 1;
 }
 
 @media only screen and (max-width: 600px) {

@@ -175,10 +175,30 @@
           size="md"
         />
       </div>
-      <div class="avatar">
-        <q-avatar size="120px" rounded>
-          <img src="https://cdn.quasar.dev/img/avatar.png" />
+      <!-- <div class="avatar">
+        <q-avatar v-if="user.profilePicture" size="120px" rounded>
+          <img :src="`../profilePictures/${user.profilePicture}`" />
         </q-avatar>
+        <q-avatar v-else size="120px" rounded>
+          <img src="../assets/avatar.png" />
+        </q-avatar>
+      </div> -->
+
+      <div class="header-recruit">
+        <div class="profile-picture-box">
+          <img
+            class="baby"
+            v-if="user.profilePicture"
+            :src="`../profilePictures/${user.profilePicture}`"
+            alt="recruit-photo"
+          />
+          <img
+            v-else
+            :src="require(`../assets/avatar.png`)"
+            alt=""
+            class="baby"
+          />
+        </div>
       </div>
 
       <q-card-section class="text-h5 text-primary q-card-name text-weight-bold">
@@ -287,11 +307,43 @@
         Data angajării: {{ user.dateOfEmployment }}
       </q-card-section>
       <q-card-section class="text-h6 text-primary q-card-name">
+        <q-btn color="primary" @click="loaded = true">
+          Schimbă poza de profil
+        </q-btn>
+      </q-card-section>
+      <q-card-section class="text-h6 text-primary q-card-name">
         <q-btn color="primary" @click="passwordDialog = true">
           Modifică parola
         </q-btn>
       </q-card-section>
     </q-card>
+    <q-dialog v-model="loaded" persistent>
+      <q-card style="font-family: 'Montserrat', sans-serif;">
+        <q-card-section>
+          <div class="text-h6 flex flex-center">
+            Schimbă poza de profil
+          </div>
+        </q-card-section>
+
+        <q-card-section
+          ><q-uploader
+            style="max-width: 300px"
+            @added="file_selected"
+            :hide-upload-btn="true"
+        /></q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Upload"
+            color="primary"
+            @click="onSubmit"
+            v-close-popup
+          />
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -307,6 +359,7 @@ export default {
   },
   data() {
     return {
+      loaded: false,
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       user: {},
@@ -331,12 +384,42 @@ export default {
         position: "all",
         cross: "dead",
         random: 15
-      }
+      },
+      filename: null,
+      check_if_document_upload: false
     };
   },
   methods: {
     ...mapMutations(["setUser"]),
     ...mapActions(["fetchUser"]),
+    file_selected(file) {
+      console.log(file);
+      this.filename = file[0];
+      this.check_if_document_upload = true;
+    },
+    onSubmit() {
+      const url = `http://localhost:8081/api/user/updateProfilePicture`;
+      const file = new FormData();
+      const newName = this.user.id + "_" + this.filename.name;
+      console.log(this.user);
+      file.append("profilePicture", this.filename, newName);
+      console.log(file);
+      axios
+        .post(url, file, { withCredentials: true })
+        .then(() => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "done",
+            message: "Poză de profil actualizată cu succes!"
+          });
+          console.log("Succes!");
+          this.user.profilePicture = newName;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     calculateAge() {
       let birthDate2 = new Date(this.user.birthDate);
       let diff_ms = Date.now() - birthDate2.getTime();
@@ -428,6 +511,7 @@ export default {
       })
       .then(userData => {
         this.user = userData.data;
+        console.log(this.user);
         this.user.age = this.calculateAge();
         console.log(this.user);
         Object.assign(this.updatedUser, userData.data);
@@ -456,5 +540,33 @@ export default {
 
 .q-card-name {
   padding: 12px;
+}
+
+.header-recruit {
+  display: flex;
+  justify-content: center;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  color: #fff;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture-box {
+  position: relative;
+  z-index: 10;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+
+.baby {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 130px;
+  /* border-style: solid;
+  border-color: #b22222; */
+  z-index: 1;
 }
 </style>

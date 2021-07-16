@@ -85,9 +85,10 @@
             <q-list style="font-family: 'Montserrat', sans-serif;">
               <q-item
                 name="adminAppointments"
+                label="Administrare programări"
                 class="bg-secondary text-primary text-weight-medium"
                 clickable
-                @click="$router.push('/doctorAppointment').catch(err => {})"
+                @click="doctorAppointment"
               >
                 <q-item-section style="text-align:center;"
                   >Administrare programări</q-item-section
@@ -98,7 +99,7 @@
                 name="adminDonors"
                 class="bg-secondary text-primary text-weight-medium"
                 clickable
-                @click="$router.push('/donorAdministration').catch(err => {})"
+                @click="donorAdministration"
               >
                 <q-item-section style="text-align:center;"
                   >Administrare donatori</q-item-section
@@ -329,6 +330,14 @@ export default {
     viewAppointments() {
       this.$router.push("/viewAppointments").catch(err => {});
       this.tab = "appointment";
+    },
+    doctorAppointment() {
+      this.$router.push("/doctorAppointment").catch(err => {});
+      this.tab = "doctorAppointment";
+    },
+    donorAdministration() {
+      this.$router.push("/donorAdministration").catch(err => {});
+      this.tab = "donorAdministration";
     },
     profile() {
       if (this.$router.path !== "/profile") {

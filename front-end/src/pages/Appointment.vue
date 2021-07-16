@@ -48,8 +48,11 @@
       Realizează o programare completând formularul de mai jos.
     </h6>
     <div class="form-card rounded-borders">
-      <div class="q-pa-md flex flex-center">
-        <div class="q-pa-md q-mr-lg date">
+      <div
+        class="q-pa-md flex flex-center"
+        style="justify-content: space-around;"
+      >
+        <div class="q-pa-md date">
           <q-date
             v-model="date"
             landscape
@@ -66,7 +69,7 @@
             >
           </q-item-section>
         </div>
-        <div class="q-pa-md q-ml-lg scroll">
+        <div class="q-pa-md scroll">
           <q-scroll-area
             class="shadow-2 rounded-borders qscroll"
             style="height: 290px; width: 400px; background:white;"

@@ -135,6 +135,7 @@ const controller = {
           },
         });
         const userData = {
+          id: user.id,
           name: user.name,
           surname: user.surname,
           email: user.email,
@@ -146,6 +147,7 @@ const controller = {
           isDoctor: user.isDoctor,
           level: employee.level,
           dateOfEmployment: employee.dateOfEmployment,
+          profilePicture: user.profilePicture,
         };
 
         console.log(userData);
@@ -160,6 +162,7 @@ const controller = {
         const lastDonation = donationsHistory[donationsHistory.length - 1];
 
         const userData = {
+          id: user.id,
           name: user.name,
           surname: user.surname,
           email: user.email,
@@ -170,6 +173,7 @@ const controller = {
           weight: user.weight,
           lastDonation: lastDonation.dateOfDonation,
           isDoctor: user.isDoctor,
+          profilePicture: user.profilePicture,
         };
 
         res.status(200).send(userData);
@@ -423,7 +427,7 @@ const controller = {
     try {
       const users = await UserDB.findAll({
         order: [["scores", "DESC"]],
-        attributes: ["id", "name", "surname", "scores"],
+        attributes: ["id", "name", "surname", "scores", "profilePicture"],
       });
       res.status(200).send(users);
     } catch (err) {
@@ -444,6 +448,7 @@ const controller = {
         id: user.id,
         name: user.name,
         surname: user.surname,
+        profilePicture: user.profilePicture,
         scores: user.scores,
         position: position + 1,
       });
@@ -480,6 +485,26 @@ const controller = {
       }
     } catch (err) {
       res.status(500).send(err);
+    }
+  },
+
+  updateProfilePicture: async (req, res) => {
+    try {
+      const user = await req.user;
+      if (user) {
+        user
+          .update({
+            profilePicture: `${req.file.filename}`,
+          })
+          .then(() =>
+            res.status(200).send({ message: "Profile picture updated." })
+          )
+          .catch((err) => res.status(500).send(err));
+      } else {
+        res.status(400).send({ message: "The user does not exist." });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 };

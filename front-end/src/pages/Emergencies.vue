@@ -31,7 +31,7 @@
             title="Cazuri active"
             :data="rows"
             :columns="columns"
-            no-data-label="Nu există niciun caz soluționat."
+            no-data-label="Nu există niciun caz activ."
             row-key="name"
             :rows-per-page-options="[4, 8, 16, 0]"
           >
@@ -131,12 +131,15 @@
             </template>
           </q-table>
         </q-card-section>
-        <q-card-actions align="right">
+        <q-card-actions
+          align="right"
+          style=" font-family: 'Montserrat-regular', sans-serif;"
+        >
           <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <div class="row mainDiv" style="margin-top: 0.5%;">
+    <div class="row mainDiv">
       <div
         class="col-6 q-pa-md cardDiv"
         style="display:flex; justify-content:center;"
@@ -154,14 +157,18 @@
               v-model="name"
               label="Nume pacient"
               class="bg-white"
-              style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
+              style="padding-bottom:0px; margin-bottom: 7%; font-family: 'Montserrat-bold', sans-serif;"
+              lazy-rules
+              :rules="[val => val !== '' || 'Please type the patient\'s name']"
             />
             <q-input
               outlined
               v-model="phone"
               label="Telefon"
               class="bg-white"
-              style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
+              style="padding-bottom:0px; margin-bottom: 7%; font-family: 'Montserrat-bold', sans-serif;"
+              lazy-rules
+              :rules="[val => val !== '' || 'Please type your phone']"
             />
             <q-select
               outlined
@@ -169,14 +176,23 @@
               label="Grupă sânge"
               :options="options"
               class="bg-white"
-              style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
+              style="padding-bottom:0px; margin-bottom: 7%; font-family: 'Montserrat-bold', sans-serif;"
+              lazy-rules
+              :rules="[
+                val => val !== '' || 'Please type the required blood type'
+              ]"
             />
             <q-input
               outlined
               v-model="quantity"
               label="Cantitate necesară"
               class="bg-white"
-              style="padding-bottom:0px; margin-bottom: 6%; font-family: 'Montserrat-bold', sans-serif;"
+              type="number"
+              style="padding-bottom:0px; margin-bottom: 7%; font-family: 'Montserrat-bold', sans-serif;"
+              lazy-rules
+              :rules="[
+                val => val !== '' || 'Please type the required quantity'
+              ]"
             />
             <q-input
               v-model="text"
@@ -346,6 +362,7 @@ export default {
         })
         .catch(err => {
           const errors = Object.values(err.response.data); //iau erorile din back
+          console.log(err);
           errors.map(item => {
             this.$q.notify({
               color: "red-9",
@@ -382,12 +399,13 @@ export default {
           console.log(this.rows);
           this.rows1.push(this.currentRow);
 
-          const diffInMilliSeconds = Math.abs(
-            new Date(this.currentRow.updatedAt) -
-              new Date(this.currentRow.createdAt)
-          );
-          const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+          let hours =
+            Math.abs(
+              new Date(this.currentRow.createdAt) -
+                new Date(this.currentRow.updatedAt)
+            ) / 36e5;
 
+          console.log(hours);
           console.log(this.myChart3.data.datasets[0].data);
 
           if (hours < 12) {

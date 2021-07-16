@@ -302,24 +302,27 @@ const controller = {
   },
 
   addEmergencyCase: async (req, res) => {
-    try {
-      const user = await req.user;
-      console.log(user);
-      const emergencyCase = {
-        name: req.body.name,
-        text: req.body.text,
-        phone: req.body.phone,
-        bloodType: req.body.bloodType,
-        quantity: req.body.quantity,
-        donorsFound: 0,
-        isAvailable: true,
-        doctorId: user.id,
-      };
-      await EmergencyDB.create(emergencyCase);
-      res.status(200).send({ message: "Emergency case created!" });
-    } catch (err) {
-      res.status(500).send(err);
-    }
+    const user = await req.user;
+
+    const emergencyCase = {
+      name: req.body.name,
+      text: req.body.text,
+      phone: req.body.phone,
+      bloodType: req.body.bloodType,
+      quantity: req.body.quantity,
+      donorsFound: 0,
+      isAvailable: true,
+      doctorId: user.id,
+    };
+
+    EmergencyDB.create(emergencyCase)
+      .then(() => {
+        res.status(200).send({ message: "Emergency case created!" });
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+        console.log(err);
+      });
   },
 
   getEmergencyCases: async (req, res) => {
@@ -382,6 +385,143 @@ const controller = {
       res.status(200).send(nr);
     } catch (err) {
       res.status(500).send(err);
+    }
+  },
+
+  getAllDonors: async (req, res) => {
+    try {
+      const donors = await UserDB.findAll({
+        where: {
+          isDoctor: null,
+        },
+      });
+
+      if (donors) {
+        res.status(200).send(donors);
+      } else {
+        res.status(401).send({ message: "No donor found." });
+      }
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  },
+
+  updateProfileByDoctor: async (req, res) => {
+    const user = await UserDB.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    const updatedUser = {
+      name: req.body.name,
+      surname: req.body.surname,
+      email: req.body.email,
+      phone: req.body.phone,
+      city: req.body.city,
+      weight: req.body.weight,
+      birthDate: req.body.birthDate,
+      bloodType: req.body.bloodType,
+    };
+    let errors = {};
+
+    if (
+      !updatedUser.name ||
+      !updatedUser.surname ||
+      !updatedUser.email ||
+      !updatedUser.phone ||
+      !updatedUser.city ||
+      !updatedUser.weight ||
+      !updatedUser.birthDate ||
+      !updatedUser.bloodType
+    ) {
+      errors.emptyFields = "Empty fields!";
+      console.log("Empty fields!");
+    }
+    if (!updatedUser.name.match("^[A-Za-zâîășțÂÎĂȘȚ]+$")) {
+      errors.name = "The name must contain only letters!";
+      console.log("The name must contain only letters!");
+    } else if (updatedUser.name.length < 2 || updatedUser.name.length > 30) {
+      errors.name = "The name must contain between 2 and 30 characters!";
+      console.log("The name must contain between 2 and 30 characters!");
+    }
+    if (!updatedUser.surname.match("^[A-Za-zâîășțÂÎĂȘȚ]+$")) {
+      errors.surname = "The surname must contain only letters!";
+      console.log("The surname must contain only letters!");
+    } else if (
+      updatedUser.surname.length < 2 ||
+      updatedUser.surname.length > 30
+    ) {
+      errors.name = "The surname must contain between 2 and 30 characters!";
+      console.log("The surname must contain between 2 and 30 characters!");
+    }
+    if (!updatedUser.email.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+      errors.email = "Incorrect email format!";
+      console.log("Incorrect email format!");
+    }
+    if (updatedUser.phone.length != 10) {
+      errors.phone = "Phone must contain 10 characters!";
+      console.log("Phone must contain 10 characters!");
+    } else if (!updatedUser.phone.match("^[0-9]*$")) {
+      errors.phone = "Phone must contain only digits!";
+      console.log("Phone must contain only digits!");
+    }
+    if (
+      !updatedUser.city.match(
+        "^[A-Za-zâîășțÂÎĂȘȚ]+(?:[s-][A-Za-zâîășțÂÎĂȘȚ]+)*$"
+      )
+    ) {
+      errors.city = "City must contain only letters!";
+      console.log("City must contain only letters!");
+    }
+    if (!Number.isInteger(updatedUser.weight)) {
+      errors.weight = "Weight must contain only digits!";
+      console.log("Weight must contain only digits!");
+    }
+
+    if (Object.keys(errors).length === 0) {
+      user
+        .update({
+          name: updatedUser.name,
+          surname: updatedUser.surname,
+          email: updatedUser.email,
+          phone: updatedUser.phone,
+          city: updatedUser.city,
+          weight: updatedUser.weight,
+          birthDate: updatedUser.birthDate,
+          bloodType: updatedUser.bloodType,
+        })
+        .then(() => {
+          res.status(200).send({ message: "User updated!" });
+        })
+        .catch((err) => res.status(500).send(err));
+    } else {
+      res.status(400).send(errors);
+      console.log(errors);
+    }
+  },
+
+  updateDonorsState: async (req, res) => {
+    try {
+      const user = await UserDB.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (user) {
+        user
+          .update({
+            canDonate: req.body.canDonate,
+          })
+          .then(() => {
+            res.status(200).send({ message: "User's state updated!" });
+          });
+      } else {
+        res.status(401).send({ message: "The id does not exist." });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 };

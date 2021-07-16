@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       isManager: DataTypes.BOOLEAN,
       canDonate: DataTypes.BOOLEAN,
       scores: DataTypes.INTEGER,
+      profilePicture: DataTypes.STRING,
     },
     {
       underscored: true,
