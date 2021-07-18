@@ -139,7 +139,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <div class="row mainDiv">
+    <div class="row mainDiv" style="margin-top: 1.75%;">
       <div
         class="col-6 q-pa-md cardDiv"
         style="display:flex; justify-content:center;"
@@ -185,7 +185,7 @@
             <q-input
               outlined
               v-model="quantity"
-              label="Cantitate necesară"
+              label="Cantitate necesară (ml)"
               class="bg-white"
               type="number"
               style="padding-bottom:0px; margin-bottom: 7%; font-family: 'Montserrat-bold', sans-serif;"
@@ -355,7 +355,8 @@ export default {
             phone: this.phone,
             bloodType: this.bloodType,
             text: this.text,
-            quantity: this.quantity
+            quantity: this.quantity,
+            donorsFound: 0
           });
 
           this.name = this.phone = this.bloodType = this.text = this.quantity = null;
@@ -399,11 +400,19 @@ export default {
           console.log(this.rows);
           this.rows1.push(this.currentRow);
 
-          let hours =
-            Math.abs(
-              new Date(this.currentRow.createdAt) -
-                new Date(this.currentRow.updatedAt)
-            ) / 36e5;
+          let hours;
+          if (
+            this.currentRow.createdAt == null &&
+            this.currentRow.updatedAt == null
+          ) {
+            hours = 0;
+          } else {
+            hours =
+              Math.abs(
+                new Date(this.currentRow.createdAt) -
+                  new Date(this.currentRow.updatedAt)
+              ) / 36e5;
+          }
 
           console.log(hours);
           console.log(this.myChart3.data.datasets[0].data);

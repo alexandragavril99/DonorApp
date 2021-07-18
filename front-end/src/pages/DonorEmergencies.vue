@@ -25,7 +25,7 @@
       style="max-width:70%; margin: 0 auto; font-family: 'Montserrat-regular', sans-serif; max-height: 375px;"
     >
       <q-carousel-slide
-        v-if="cases.length == 0"
+        v-if="compatibleCases.length == 0"
         name="style"
         class="column no-wrap flex-center"
       >
@@ -539,10 +539,13 @@ export default {
                 } else this.incompatibleCases.push(element);
               });
             }
-            if (this.compatibleCases.length) {
+            console.log(this.compatibleCases.length);
+            if (this.compatibleCases.length != 0) {
               this.slide = this.compatibleCases[0].id;
+            } else {
+              this.slide = "style";
             }
-            if (this.compatibleCases.length) {
+            if (this.incompatibleCases.length != 0) {
               this.slide1 = this.incompatibleCases[0].id;
             }
           })

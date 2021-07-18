@@ -7,7 +7,7 @@
       :bg="true"
       :config="config"
     />
-    <div class="flex flex-center">
+    <div class="flex flex-center" style="margin-top:1.5%;">
       <div>
         <h4
           style="margin:0; margin-top: 15%; font-family: 'Montserrat-bold', sans-serif; color:rgba(40,49,80,1); "
@@ -147,6 +147,10 @@ export default {
           }
         });
 
+        dataYear[0] = dataYear[0] * 1250;
+        dataYear[1] = dataYear[1] * 975;
+        dataYear[2] = dataYear[2] * 550;
+
         var ctx = document.getElementById("myChart1");
         var myChart1 = new Chart(ctx, {
           type: "bar",
@@ -160,8 +164,8 @@ export default {
             datasets: [
               {
                 label: "Tip sânge donat pe ultimele 6 luni",
-                // data: [no, noA2, noB3, noAB4],
-                data: [18, 26, 12, 34],
+                data: [no * 9, noA2 * 12, noB3 * 9, noAB4 * 5],
+                // data: [18, 26, 12, 34],
                 backgroundColor: [
                   "rgba(180,54,54,1)",
                   "rgba(240,84,64,1)",
@@ -214,7 +218,7 @@ export default {
               {
                 label: "Frecvență donare pe 2021",
                 //data: dataMonths,
-                data: [10, 30, 28, 40, 45, 50, 38],
+                data: [20, 30, 28, 25, 45, 48, 42],
                 fill: false,
                 borderColor: ["rgba(240,84,64,0.9)"],
                 tension: 0.1
@@ -248,8 +252,8 @@ export default {
             datasets: [
               {
                 label: "Frecvență donare pe 2021",
-                // data: dataYear,
-                data: [500, 700, 400],
+                data: dataYear,
+                //data: [500, 700, 400],
                 backgroundColor: ["#B43636", "#283150", "#F05440"],
                 hoverOffset: 4
               }

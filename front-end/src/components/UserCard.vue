@@ -134,6 +134,17 @@
               <q-icon name="self_improvement"></q-icon>
             </template>
           </q-input>
+          <q-input
+            dense
+            v-model="scores"
+            autofocus
+            @keyup.enter="prompt = false"
+            item-aligned
+          >
+            <template v-slot:prepend>
+              <q-icon name="star_rate"></q-icon>
+            </template>
+          </q-input>
         </q-card-section>
 
         <q-card-actions
@@ -260,7 +271,8 @@ export default {
     "phonep",
     "bloodTypep",
     "cityp",
-    "weightp"
+    "weightp",
+    "scoresp"
   ],
   data() {
     return {
@@ -279,6 +291,7 @@ export default {
       bloodType: this.bloodTypep,
       city: this.cityp,
       weight: this.weightp,
+      scores: this.scoresp,
       id1: this.idp,
       name1: this.namep,
       surname1: this.surnamep,
@@ -289,7 +302,8 @@ export default {
       phone1: this.phonep,
       bloodType1: this.bloodTypep,
       city1: this.cityp,
-      weight1: this.weightp
+      weight1: this.weightp,
+      scores1: this.scoresp
     };
   },
   methods: {

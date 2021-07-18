@@ -75,6 +75,7 @@
                     <q-card-section>
                       <q-btn
                         color="primary"
+                        style="max-width: 166px;"
                         @click="
                           (confirm = true) && (currentAppointment = props.row)
                         "
